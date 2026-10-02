@@ -356,52 +356,73 @@ $("toggleBalance").addEventListener("click", () => {
 function showTicker(recharges) {
   const track = $("tickerTrack");
   track.replaceChildren();
+  track.style.animationDuration = "";
 
-  if (!Array.isArray(recharges) || recharges.length === 0) {
+  // Utiliser uniquement les opérations reçues de Supabase.
+  const validRecharges = Array.isArray(recharges)
+    ? recharges.filter(item =>
+        item &&
+        Number.isFinite(Number(item.amount)) &&
+        Number(item.amount) > 0
+      )
+    : [];
+
+  if (validRecharges.length === 0) {
     track.className = "ticker-track static";
+
     const msg = document.createElement("span");
     msg.className = "ticker-msg";
-    msg.textContent = "Bienvenue sur P HOME — votre espace personnel.";
+    msg.textContent = "Aucune recharge validée pour le moment.";
+
     track.appendChild(msg);
     return;
   }
 
-  // Un groupe contient au moins ~12 éléments pour que la boucle reste continue.
-  const repeats = Math.max(1, Math.ceil(12 / recharges.length));
+  // Construire les éléments à partir des vraies données.
+  const group = document.createElement("div");
+  group.className = "ticker-group";
 
-  const makeGroup = hidden => {
-    const group = document.createElement("div");
-    group.className = "ticker-group";
-    if (hidden) group.setAttribute("aria-hidden", "true");
+  validRecharges.forEach(item => {
+    const digits = String(item.phone_last4 || "")
+      .replace(/\D/g, "")
+      .slice(-4);
 
-    for (let r = 0; r < repeats; r++) {
-      recharges.forEach(item => {
-        const last4 = String(item.phone_last4 || "").replace(/[^\d]/g, "");
+    const tick = document.createElement("span");
+    tick.className = "tick";
 
-        const tick = document.createElement("span");
-        tick.className = "tick";
+    const user = document.createElement("span");
+    user.className = "user";
+    user.textContent = "Utilisateur ••••" + (digits || "••••");
 
-        const user = document.createElement("span");
-        user.className = "user";
-        user.textContent = "Utilisateur ••••" + (last4 || "••••");
+    const verb = document.createTextNode(" a rechargé ");
 
-        const verb = document.createTextNode(" a rechargé ");
+    const amount = document.createElement("strong");
+    amount.textContent = money(item.amount) + " FCFA";
 
-        const amount = document.createElement("strong");
-        amount.textContent = money(item.amount) + " FCFA";
+    tick.append(user, verb, amount);
+    group.appendChild(tick);
+  });
 
-        tick.append(user, verb, amount);
-        group.appendChild(tick);
-      });
-    }
-    return group;
-  };
+  // Une seule recharge : afficher une seule fois, sans répétition.
+  if (validRecharges.length === 1) {
+    track.className = "ticker-track static";
+    track.appendChild(group);
+    return;
+  }
 
+  // Plusieurs recharges réelles : dupliquer le groupe uniquement
+  // pour assurer une animation continue, sans créer de transactions.
   track.className = "ticker-track";
-  track.append(makeGroup(false), makeGroup(true));
-  track.style.animationDuration = Math.max(24, recharges.length * repeats * 4) + "s";
-}
+  track.appendChild(group);
 
+  const clone = group.cloneNode(true);
+  clone.setAttribute("aria-hidden", "true");
+  track.appendChild(clone);
+
+  track.style.animationDuration =
+    Math.max(20, validRecharges.length * 4) + "s";
+}
+  
 /* ---------------- Chargement ---------------- */
 
 async function loadDashboard() {
