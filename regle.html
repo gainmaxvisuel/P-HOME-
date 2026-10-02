@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d1117">
+
+  <title>Règles - P HOME</title>
+
+  <style>
+    :root{
+      --bg:#0d1117;
+      --surface:#151b23;
+      --surface2:#10151c;
+      --border:#2a323d;
+      --text:#f2f4f7;
+      --muted:#929ca9;
+      --accent:#3b8cff;
+      --accent-soft:rgba(59,140,255,.12);
+      --green:#3ddc84;
+      --red:#ff5c69;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      min-height:100vh;
+    }
+
+    .page{
+      width:100%;
+      max-width:560px;
+      margin:auto;
+      padding:16px 15px 35px;
+    }
+
+    /* HEADER */
+
+    .header{
+      height:52px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
+
+    .back{
+      width:40px;
+      height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:11px;
+      color:var(--text);
+      text-decoration:none;
+    }
+
+    .back svg{
+      width:20px;
+      height:20px;
+    }
+
+    .header-title{
+      font-size:17px;
+      font-weight:750;
+    }
+
+    .header-logo{
+      width:55px;
+      height:40px;
+      object-fit:contain;
+    }
+
+    /* HERO */
+
+    .hero{
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(59,140,255,.14),
+          transparent 58%
+        ),
+        var(--surface);
+
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:30px 20px;
+      text-align:center;
+      margin-bottom:12px;
+    }
+
+    .hero-icon{
+      width:52px;
+      height:52px;
+      margin:0 auto 15px;
+      border-radius:15px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--accent-soft);
+      color:var(--accent);
+    }
+
+    .hero-icon svg{
+      width:26px;
+      height:26px;
+    }
+
+    .hero h1{
+      font-size:22px;
+      margin-bottom:9px;
+    }
+
+    .hero p{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    /* SECTION */
+
+    .section{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:19px 18px;
+      margin-bottom:12px;
+    }
+
+    .section-number{
+      color:var(--accent);
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+
+    .section-title{
+      font-size:17px;
+      font-weight:780;
+      margin-bottom:12px;
+    }
+
+    .section p{
+      color:#c5ccd4;
+      font-size:13px;
+      line-height:1.8;
+      margin-bottom:11px;
+    }
+
+    .section p:last-child{
+      margin-bottom:0;
+    }
+
+    /* RULE ITEM */
+
+    .rules{
+      margin-top:5px;
+    }
+
+    .rule{
+      display:flex;
+      gap:11px;
+      padding:12px 0;
+      border-bottom:1px solid var(--border);
+    }
+
+    .rule:last-child{
+      border-bottom:0;
+      padding-bottom:0;
+    }
+
+    .rule-number{
+      width:27px;
+      height:27px;
+      min-width:27px;
+      border-radius:8px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .rule-content{
+      flex:1;
+    }
+
+    .rule-title{
+      font-size:13px;
+      font-weight:750;
+      margin-bottom:4px;
+    }
+
+    .rule-text{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    /* INFO BOX */
+
+    .info-box{
+      margin-top:14px;
+      padding:15px;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:12px;
+    }
+
+    .info-title{
+      font-size:13px;
+      font-weight:750;
+      margin-bottom:6px;
+    }
+
+    .info-text{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    /* GREEN */
+
+    .green-box{
+      background:rgba(61,220,132,.07);
+      border:1px solid rgba(61,220,132,.18);
+      border-radius:12px;
+      padding:15px;
+      margin-top:14px;
+    }
+
+    .green-title{
+      color:var(--green);
+      font-size:13px;
+      font-weight:750;
+      margin-bottom:6px;
+    }
+
+    .green-text{
+      color:#bec9c2;
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    /* WARNING */
+
+    .warning{
+      background:rgba(255,92,105,.06);
+      border:1px solid rgba(255,92,105,.18);
+      border-radius:12px;
+      padding:15px;
+      margin-top:14px;
+    }
+
+    .warning-title{
+      color:var(--red);
+      font-size:13px;
+      font-weight:750;
+      margin-bottom:6px;
+    }
+
+    .warning-text{
+      color:#c8bec0;
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    /* CHECKLIST */
+
+    .checklist{
+      margin-top:13px;
+    }
+
+    .check{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:9px 0;
+    }
+
+    .check-icon{
+      width:20px;
+      height:20px;
+      min-width:20px;
+      border-radius:6px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:1px;
+    }
+
+    .check-icon svg{
+      width:12px;
+      height:12px;
+    }
+
+    .check-text{
+      color:#c5ccd4;
+      font-size:12px;
+      line-height:1.65;
+    }
+
+    /* BUTTON */
+
+    .return{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      height:49px;
+      margin-top:15px;
+      border-radius:12px;
+      background:var(--accent);
+      color:#fff;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:750;
+    }
+
+    .return:active{
+      transform:scale(.98);
+    }
+
+    .footer-note{
+      text-align:center;
+      color:#626d7a;
+      font-size:10px;
+      line-height:1.6;
+      margin-top:16px;
+      padding:0 8px;
+    }
+
+    @media(max-width:380px){
+      .hero h1{
+        font-size:20px;
+      }
+
+      .section-title{
+        font-size:16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <a href="moi.html" class="back" aria-label="Retour">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+
+    </a>
+
+    <div class="header-title">
+      Règles
+    </div>
+
+    <img
+      src="logoreg.png"
+      class="header-logo"
+      alt="P HOME"
+    >
+
+  </header>
+
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-icon">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M9 11l3 3L22 4"/>
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+
+    </div>
+
+    <h1>Règles de P HOME</h1>
+
+    <p>
+      Les règles présentées sur cette page ont pour objectif
+      de définir les principales conditions d'utilisation
+      de la plateforme et de maintenir un environnement
+      organisé et sécurisé pour les utilisateurs.
+    </p>
+
+  </section>
+
+
+  <!-- 01 COMPTE -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 01
+    </div>
+
+    <div class="section-title">
+      Création et utilisation du compte
+    </div>
+
+    <div class="rules">
+
+      <div class="rule">
+
+        <div class="rule-number">01</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Informations exactes
+          </div>
+
+          <div class="rule-text">
+            Chaque utilisateur doit fournir des informations
+            exactes et à jour lors de la création et de
+            l'utilisation de son compte.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="rule-number">02</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Un compte personnel
+          </div>
+
+          <div class="rule-text">
+            Le compte est destiné à son titulaire. Les
+            identifiants de connexion doivent être conservés
+            de manière confidentielle.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="rule-number">03</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Sécurité des accès
+          </div>
+
+          <div class="rule-text">
+            L'utilisateur doit protéger son mot de passe et
+            éviter de communiquer ses informations de connexion
+            à une autre personne.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 02 PRODUITS -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 02
+    </div>
+
+    <div class="section-title">
+      Produits
+    </div>
+
+    <p>
+      Les produits disponibles sur P HOME sont présentés
+      avec leurs informations propres, notamment leur prix,
+      leur durée de cycle et les conditions de revenus
+      indiquées sur la plateforme.
+    </p>
+
+    <div class="checklist">
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Vérifier les informations d'un produit avant toute
+          opération.
+        </div>
+
+      </div>
+
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Vérifier le montant disponible avant de confirmer
+          une opération.
+        </div>
+
+      </div>
+
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Lire les conditions affichées avant toute
+          souscription à un produit.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 03 REVENUS -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 03
+    </div>
+
+    <div class="section-title">
+      Revenus et solde
+    </div>
+
+    <p>
+      Les revenus affichés sur le compte sont calculés selon
+      les opérations et les règles enregistrées par la
+      plateforme.
+    </p>
+
+    <p>
+      Le solde disponible peut être utilisé conformément
+      aux fonctionnalités proposées sur P HOME.
+    </p>
+
+    <div class="info-box">
+
+      <div class="info-title">
+        Important
+      </div>
+
+      <div class="info-text">
+        Les montants affichés dans l'application doivent être
+        consultés avant toute opération. Une opération confirmée
+        peut être soumise aux conditions applicables au moment
+        de sa réalisation.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 04 RECHARGE -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 04
+    </div>
+
+    <div class="section-title">
+      Recharge du compte
+    </div>
+
+    <p>
+      Toute recharge doit être effectuée en utilisant les
+      moyens de paiement et les instructions officiellement
+      affichés sur la plateforme.
+    </p>
+
+    <div class="rules">
+
+      <div class="rule">
+
+        <div class="rule-number">01</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Vérifier le montant
+          </div>
+
+          <div class="rule-text">
+            Contrôlez toujours le montant avant de confirmer
+            votre paiement.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="rule-number">02</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Conserver les preuves
+          </div>
+
+          <div class="rule-text">
+            Conservez les informations ou justificatifs
+            relatifs à vos opérations lorsque cela est
+            nécessaire.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="rule-number">03</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Vérification
+          </div>
+
+          <div class="rule-text">
+            Une opération peut nécessiter une vérification
+            avant que le montant soit définitivement crédité.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 05 RETRAIT -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 05
+    </div>
+
+    <div class="section-title">
+      Retraits
+    </div>
+
+    <p>
+      Les demandes de retrait doivent être effectuées depuis
+      les fonctionnalités prévues à cet effet.
+    </p>
+
+    <p>
+      Les informations du compte de retrait doivent être
+      correctement renseignées afin de limiter les erreurs
+      lors du traitement.
+    </p>
+
+    <div class="warning">
+
+      <div class="warning-title">
+        Attention
+      </div>
+
+      <div class="warning-text">
+        Une erreur dans les informations du compte de retrait
+        peut entraîner un retard ou nécessiter une vérification
+        supplémentaire.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 06 EQUIPE -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 06
+    </div>
+
+    <div class="section-title">
+      Équipe et parrainage
+    </div>
+
+    <p>
+      Le système d'équipe permet à un utilisateur de partager
+      son lien ou son code de parrainage conformément aux
+      fonctionnalités proposées sur P HOME.
+    </p>
+
+    <p>
+      Les commissions de parrainage sont calculées selon les
+      pourcentages et niveaux configurés sur la plateforme.
+    </p>
+
+    <div class="green-box">
+
+      <div class="green-title">
+        Utilisation responsable
+      </div>
+
+      <div class="green-text">
+        Le parrainage doit être utilisé de manière transparente.
+        Il est interdit de tromper une personne ou de fournir
+        volontairement de fausses informations concernant
+        la plateforme.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 07 SECURITE -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 07
+    </div>
+
+    <div class="section-title">
+      Sécurité du compte
+    </div>
+
+    <p>
+      La sécurité du compte dépend à la fois des mécanismes
+      de protection de la plateforme et des bonnes pratiques
+      de l'utilisateur.
+    </p>
+
+    <div class="checklist">
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Utiliser un mot de passe difficile à deviner.
+        </div>
+
+      </div>
+
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Ne jamais communiquer son mot de passe à un tiers.
+        </div>
+
+      </div>
+
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Se déconnecter après utilisation sur un appareil
+          partagé.
+        </div>
+
+      </div>
+
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Signaler rapidement toute activité inhabituelle
+          liée au compte.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 08 INTERDICTIONS -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 08
+    </div>
+
+    <div class="section-title">
+      Comportements interdits
+    </div>
+
+    <p>
+      Afin de préserver la sécurité et l'intégrité de la
+      plateforme, certaines pratiques ne sont pas autorisées.
+    </p>
+
+    <div class="rules">
+
+      <div class="rule">
+
+        <div class="rule-number">01</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Fraude
+          </div>
+
+          <div class="rule-text">
+            Toute tentative de fraude, de manipulation ou
+            d'utilisation abusive des fonctionnalités est
+            interdite.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="rule-number">02</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Fausse identité
+          </div>
+
+          <div class="rule-text">
+            L'utilisation volontaire de fausses informations
+            dans le but de contourner les règles est interdite.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="rule-number">03</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Exploitation technique
+          </div>
+
+          <div class="rule-text">
+            Toute tentative d'exploiter une faille ou de
+            contourner les mécanismes de sécurité de la
+            plateforme est interdite.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="rule">
+
+        <div class="rule-number">04</div>
+
+        <div class="rule-content">
+
+          <div class="rule-title">
+            Utilisation abusive
+          </div>
+
+          <div class="rule-text">
+            L'utilisation automatisée ou abusive des services
+            pouvant perturber leur fonctionnement peut entraîner
+            une restriction du compte.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 09 VERIFICATION -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 09
+    </div>
+
+    <div class="section-title">
+      Vérifications
+    </div>
+
+    <p>
+      Pour des raisons de sécurité, certaines opérations
+      peuvent faire l'objet d'une vérification.
+    </p>
+
+    <p>
+      Cette vérification peut notamment concerner les
+      opérations financières, les informations du compte
+      ou une activité inhabituelle.
+    </p>
+
+    <p>
+      L'utilisateur doit fournir les informations demandées
+      lorsque celles-ci sont nécessaires au traitement
+      d'une opération.
+    </p>
+
+  </section>
+
+
+    <!-- 10 SUSPENSION -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 10
+    </div>
+
+    <div class="section-title">
+      Suspension ou restriction
+    </div>
+
+    <p>
+      En cas de comportement contraire aux règles de la
+      plateforme, certaines fonctionnalités peuvent être
+      temporairement restreintes pendant une vérification.
+    </p>
+
+    <p>
+      Lorsqu'une activité inhabituelle, suspecte ou
+      potentiellement irrégulière est détectée, des mesures
+      de sécurité peuvent être appliquées afin de protéger
+      le compte, les utilisateurs et la plateforme.
+    </p>
+
+    <div class="warning">
+
+      <div class="warning-title">
+        Sécurité avant tout
+      </div>
+
+      <div class="warning-text">
+        Une restriction peut être appliquée lorsqu'une
+        vérification est nécessaire. L'utilisateur peut
+        contacter le service concerné afin d'obtenir des
+        informations concernant la situation de son compte.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 11 RESPONSABILITÉ -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 11
+    </div>
+
+    <div class="section-title">
+      Responsabilité de l'utilisateur
+    </div>
+
+    <p>
+      Chaque utilisateur est responsable des opérations
+      réalisées depuis son compte ainsi que des informations
+      communiquées à la plateforme.
+    </p>
+
+    <p>
+      Avant de confirmer une opération, l'utilisateur doit
+      vérifier attentivement les informations affichées,
+      notamment le montant, les conditions et les coordonnées
+      utilisées.
+    </p>
+
+    <p>
+      L'utilisateur doit également prendre les précautions
+      nécessaires pour protéger son compte contre toute
+      utilisation non autorisée.
+    </p>
+
+  </section>
+
+
+  <!-- 12 MODIFICATION DES RÈGLES -->
+  <section class="section">
+
+    <div class="section-number">
+      Règle 12
+    </div>
+
+    <div class="section-title">
+      Évolution des règles
+    </div>
+
+    <p>
+      Les fonctionnalités, services et règles de P HOME
+      peuvent évoluer afin de répondre aux besoins de la
+      plateforme, aux exigences de sécurité et aux évolutions
+      techniques.
+    </p>
+
+    <p>
+      En cas de modification importante, les nouvelles
+      informations peuvent être publiées directement dans
+      la plateforme afin de permettre aux utilisateurs
+      d'en prendre connaissance.
+    </p>
+
+  </section>
+
+
+  <!-- RAPPEL -->
+  <section class="section">
+
+    <div class="section-number">
+      Rappel important
+    </div>
+
+    <div class="section-title">
+      Avant toute opération
+    </div>
+
+    <div class="checklist">
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Vérifiez toujours les informations affichées
+          avant de confirmer une opération.
+        </div>
+
+      </div>
+
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Ne communiquez jamais votre mot de passe ou vos
+          informations de connexion à une autre personne.
+        </div>
+
+      </div>
+
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          Utilisez uniquement les fonctionnalités et les
+          moyens de paiement officiellement indiqués
+          sur la plateforme.
+        </div>
+
+      </div>
+
+
+      <div class="check">
+
+        <div class="check-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        </div>
+
+        <div class="check-text">
+          En cas de problème, contactez le service client
+          plutôt que de tenter de contourner le système.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- OBJECTIF -->
+  <section class="section">
+
+    <div class="section-number">
+      Notre objectif
+    </div>
+
+    <div class="section-title">
+      Une utilisation claire et sécurisée
+    </div>
+
+    <p>
+      Ces règles ont pour objectif de contribuer au bon
+      fonctionnement de P HOME et de créer un environnement
+      organisé pour l'ensemble des utilisateurs.
+    </p>
+
+    <p>
+      Le respect de ces règles contribue également à la
+      protection des comptes, des opérations et des données
+      utilisées dans le cadre du service.
+    </p>
+
+    <p>
+      Chaque utilisateur est invité à consulter régulièrement
+      les informations disponibles dans la plateforme afin
+      de rester informé des conditions applicables.
+    </p>
+
+  </section>
+
+
+  <!-- RETOUR -->
+  <a href="moi.html" class="return">
+    Retour à mon espace
+  </a>
+
+
+  <!-- NOTE -->
+  <div class="footer-note">
+    Les règles affichées sur cette page peuvent être mises
+    à jour en fonction de l'évolution de P HOME.
+  </div>
+
+</main>
+
+</body>
+</html>
