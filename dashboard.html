@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#071a13">
+<title>P HOME — ACCEUIL</title>
+
+<style>
+:root{
+  --bg:#f4f7f5;
+  --green:#0b5b40;
+  --deep:#071a13;
+  --gold:#e9bd62;
+  --muted:#77847e;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:#17231d;
+  padding-bottom:88px;
+}
+button,a{-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none}
+.top{
+  background:linear-gradient(135deg,#071a13,#0d5139);
+  color:#fff;
+  padding:22px 18px 28px;
+  border-radius:0 0 25px 25px;
+}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{
+  width:43px;height:43px;border-radius:14px;
+  background:linear-gradient(145deg,#f6d58d,#d6a843);
+  color:#10291d;display:grid;place-items:center;
+  font-size:22px;font-weight:900;
+  box-shadow:0 5px 15px #0002;
+}
+.brand-name{font-size:20px;font-weight:850;letter-spacing:1.5px}
+.brand-sub{font-size:10px;color:#d0e0d7;margin-top:3px;letter-spacing:1.8px}
+.account{
+  margin-left:auto;text-align:right;
+  font-size:12px;color:#d9e7df;
+}
+.account strong{display:block;color:#fff;font-size:14px;margin-top:4px}
+.welcome{margin-top:25px}
+.welcome small{color:#c8ddd1;font-size:13px}
+.welcome h1{font-size:24px;margin:6px 0 0;font-weight:750}
+.ticker{
+  margin:-12px 14px 18px;
+  position:relative;
+  background:#fff;border-radius:14px;
+  box-shadow:0 5px 20px #163b2b0e;
+  padding:13px 12px;
+  display:flex;align-items:center;gap:10px;
+  overflow:hidden;
+}
+.live-dot{
+  flex-shrink:0;width:9px;height:9px;border-radius:50%;
+  background:#16a36a;box-shadow:0 0 0 4px #16a36a19;
+}
+.ticker-window{overflow:hidden;white-space:nowrap;flex:1}
+.ticker-text{
+  display:inline-block;font-size:12px;color:#46564d;
+  animation:slide 17s linear infinite;
+}
+.ticker-text strong{color:var(--green)}
+@keyframes slide{
+  0%{transform:translateX(100%)}
+  100%{transform:translateX(-100%)}
+}
+.section-title{
+  margin:20px 17px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.section-title h2{font-size:16px;margin:0;font-weight:800}
+.section-title span{font-size:11px;color:var(--muted)}
+.grid{
+  padding:0 14px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.tile{
+  min-height:133px;background:#fff;border-radius:18px;
+  padding:16px 14px;position:relative;overflow:hidden;
+  box-shadow:0 4px 18px #183d2b08;
+  border:1px solid #e9efeb;
+  transition:transform .15s;
+}
+.tile:active{transform:scale(.98)}
+.tile-top{display:flex;justify-content:space-between;align-items:center}
+.tile-icon{
+  width:43px;height:43px;border-radius:14px;
+  display:grid;place-items:center;font-size:21px;
+}
+.green{background:#e4f4eb;color:#0a754b}
+.gold{background:#fff2d9;color:#a87313}
+.blue{background:#e7efff;color:#315bb0}
+.purple{background:#f0eaff;color:#7351bb}
+.tile h3{font-size:14px;margin:14px 0 4px;font-weight:750}
+.tile p{font-size:11px;margin:0;color:#89958e}
+.tile-arrow{
+  position:absolute;right:14px;bottom:14px;
+  font-size:18px;color:#a6b2aa;
+}
+.balance-tile{
+  background:linear-gradient(140deg,#0b5b40,#073624);
+  color:white;border:none;
+}
+.balance-tile p{color:#c9dfd4}
+.balance-tile .tile-icon{background:#ffffff19;color:#f4d58e}
+.balance-tile .tile-arrow{color:#c3d9ce}
+.amount{font-size:19px;font-weight:850;margin-top:13px;letter-spacing:.2px}
+.amount small{font-size:10px;font-weight:500}
+.hide-amount{
+  border:0;background:#ffffff20;color:white;border-radius:20px;
+  padding:5px 8px;font-size:11px;cursor:pointer;
+}
+.notice{
+  margin:20px 14px 0;padding:16px;border-radius:17px;
+  background:#fff;border:1px solid #e9efeb;
+  display:flex;align-items:center;gap:12px;
+}
+.notice-icon{
+  width:43px;height:43px;flex-shrink:0;border-radius:14px;
+  display:grid;place-items:center;background:#fff2d9;font-size:21px;
+}
+.notice h3{font-size:13px;margin:0 0 5px}
+.notice p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.notice a{margin-left:auto;color:var(--green);font-size:12px;font-weight:800}
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:10;
+  height:76px;background:#fff;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  padding:8px 8px max(8px,env(safe-area-inset-bottom));
+  box-shadow:0 -5px 25px #163b2b0b;
+  border-top:1px solid #e9efeb;
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;color:#8b9890;font-size:10px;
+  font-weight:600;
+}
+.nav-icon{font-size:20px;line-height:1}
+.nav-item.active{color:var(--green)}
+.nav-item.active .nav-icon{transform:translateY(-1px)}
+.loading{opacity:.6}
+.error-msg{
+  display:none;margin:12px 15px;padding:12px;
+  border-radius:12px;background:#fff0ed;color:#9e382a;font-size:12px;
+}
+
+/* Fenêtre Telegram */
+.modal-backdrop{
+  position:fixed;inset:0;background:#061b12b8;
+  z-index:30;display:none;align-items:center;justify-content:center;
+  padding:24px;backdrop-filter:blur(4px);
+}
+.modal-backdrop.show{display:flex}
+.modal{
+  background:#fff;border-radius:24px;padding:25px 22px;
+  width:100%;max-width:360px;text-align:center;
+  box-shadow:0 20px 70px #0003;
+  animation:pop .25s ease-out;
+}
+@keyframes pop{
+  from{opacity:0;transform:translateY(12px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.telegram-icon{
+  width:70px;height:70px;margin:0 auto 15px;
+  border-radius:23px;background:#e3f4ff;
+  display:grid;place-items:center;font-size:34px;
+}
+.modal h2{font-size:21px;margin:0 0 10px;color:#10271b}
+.modal p{font-size:13px;line-height:1.65;color:#75827a;margin:0 0 20px}
+.primary-btn,.secondary-btn{
+  display:block;width:100%;border:0;border-radius:13px;
+  padding:14px;font-size:13px;font-weight:800;cursor:pointer;
+}
+.primary-btn{background:#1688d4;color:#fff}
+.secondary-btn{background:#f2f5f3;color:#58665e;margin-top:9px}
+@media(min-width:600px){
+  body{max-width:480px;margin:auto;border-left:1px solid #e6ece8;border-right:1px solid #e6ece8}
+  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:480px}
+}
+</style>
+</head>
+
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo">P</div>
+    <div>
+      <div class="brand-name">P HOME</div>
+      <div class="brand-sub">VOTRE ESPACE PERSONNEL</div>
+    </div>
+    <div class="account">
+      Mon compte
+      <strong id="phoneLabel">••••</strong>
+    </div>
+  </div>
+
+  <div class="welcome">
+    <small>Bienvenue sur votre espace</small>
+    <h1>Bonjour 👋</h1>
+  </div>
+</header>
+
+<div class="ticker" aria-label="Dernières recharges validées">
+  <span class="live-dot"></span>
+  <div class="ticker-window">
+    <div class="ticker-text" id="tickerText">
+      Chargement des dernières recharges validées…
+    </div>
+  </div>
+</div>
+
+<div class="section-title">
+  <h2>Mon espace</h2>
+  <span>Tableau de bord</span>
+</div>
+
+<main>
+  <div class="grid">
+    <a class="tile" href="recharge.html">
+      <div class="tile-top">
+        <div class="tile-icon green">↗</div>
+      </div>
+      <h3>Recharge</h3>
+      <p>Ajouter des fonds</p>
+      <span class="tile-arrow">›</span>
+    </a>
+
+    <a class="tile" href="retrait.html">
+      <div class="tile-top">
+        <div class="tile-icon gold">↙</div>
+      </div>
+      <h3>Retrait</h3>
+      <p>Demander un retrait</p>
+      <span class="tile-arrow">›</span>
+    </a>
+
+    <a class="tile" href="taches.html">
+      <div class="tile-top">
+        <div class="tile-icon blue">▦</div>
+      </div>
+      <h3>Centre de tâche</h3>
+      <p>Découvrir les activités</p>
+      <span class="tile-arrow">›</span>
+    </a>
+
+    <a class="tile" href="pointage.html">
+      <div class="tile-top">
+        <div class="tile-icon purple">✓</div>
+      </div>
+      <h3>Pointage</h3>
+      <p id="checkinLabel">Pointage quotidien</p>
+      <span class="tile-arrow">›</span>
+    </a>
+
+    <div class="tile balance-tile">
+      <div class="tile-top">
+        <div class="tile-icon">◈</div>
+        <button class="hide-amount" id="toggleBalance" type="button">Masquer</button>
+      </div>
+      <h3>Mon solde</h3>
+      <div class="amount" id="balanceAmount">— <small>FCFA</small></div>
+      <span class="tile-arrow"> </span>
+    </div>
+
+    <div class="tile">
+      <div class="tile-top">
+        <div class="tile-icon gold">▤</div>
+      </div>
+      <h3>Total cumulé</h3>
+      <div class="amount" style="color:#0b5b40" id="totalAmount">— <small>FCFA</small></div>
+      <p>Revenus déjà reçus</p>
+    </div>
+  </div>
+
+  <div class="error-msg" id="errorMsg"></div>
+
+  <div class="notice">
+    <div class="notice-icon">✦</div>
+    <div>
+      <h3>Découvrez nos produits</h3>
+      <p>Consultez les produits disponibles dans votre espace.</p>
+    </div>
+    <a href="produit.html">Voir ›</a>
+  </div>
+</main>
+
+<nav class="bottom-nav">
+  <a class="nav-item active" href="dashboard.html">
+    <span class="nav-icon">⌂</span><span>Accueil</span>
+  </a>
+  <a class="nav-item" href="produit.html">
+    <span class="nav-icon">▣</span><span>Produit</span>
+  </a>
+  <a class="nav-item" href="equipe.html">
+    <span class="nav-icon">♧</span><span>Équipe</span>
+  </a>
+  <a class="nav-item" href="moi.html">
+    <span class="nav-icon">◎</span><span>Moi</span>
+  </a>
+</nav>
+
+<div class="modal-backdrop" id="telegramModal" role="dialog" aria-modal="true" aria-labelledby="telegramTitle">
+  <div class="modal">
+    <div class="telegram-icon">✈</div>
+    <h2 id="telegramTitle">Rejoignez P HOME</h2>
+    <p>
+      Retrouvez les annonces, les actualités et les informations
+      importantes de P HOME sur notre canal Telegram officiel.
+    </p>
+    <a class="primary-btn" href="https://t.me/phomeold" target="_blank" rel="noopener noreferrer" id="joinTelegram">
+      Rejoindre le canal Telegram
+    </a>
+    <button class="secondary-btn" id="laterTelegram" type="button">Plus tard</button>
+  </div>
+</div>
+
+<script>
+const DASHBOARD_ENDPOINT =
+  "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1/p-home-dashboard";
+
+const sessionToken = sessionStorage.getItem("phome_session_token");
+const userId = sessionStorage.getItem("phome_user_id");
+
+const money = value =>
+  Number(value || 0).toLocaleString("fr-FR", {
+    maximumFractionDigits: 0
+  });
+
+const showError = message => {
+  const box = document.getElementById("errorMsg");
+  box.textContent = message;
+  box.style.display = "block";
+};
+
+let balanceVisible = true;
+let currentBalance = 0;
+
+document.getElementById("toggleBalance").addEventListener("click", () => {
+  balanceVisible = !balanceVisible;
+  document.getElementById("balanceAmount").innerHTML = balanceVisible
+    ? money(currentBalance) + ' <small>FCFA</small>'
+    : '•••••• <small>FCFA</small>';
+  document.getElementById("toggleBalance").textContent =
+    balanceVisible ? "Masquer" : "Afficher";
+});
+
+function showTicker(recharges) {
+  const ticker = document.getElementById("tickerText");
+
+  if (!recharges || recharges.length === 0) {
+    ticker.textContent = "Bienvenue sur P HOME — votre espace personnel.";
+    ticker.style.animation = "none";
+    return;
+  }
+
+  ticker.innerHTML = recharges.map(item =>
+    '<span>Utilisateur <strong>••••' +
+    String(item.phone_last4 || "••••").replace(/[^\d*]/g, "") +
+    '</strong> a rechargé <strong>' +
+    money(item.amount) + ' FCFA</strong> &nbsp; • &nbsp; </span>'
+  ).join("");
+
+  ticker.style.animation = "slide 17s linear infinite";
+}
+
+async function loadDashboard() {
+  if (!sessionToken || !userId) {
+    window.location.replace("login.html");
+    return;
+  }
+
+  try {
+    const response = await fetch(DASHBOARD_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: sessionToken })
+    });
+
+    const data = await response.json();
+
+    if (response.status === 401) {
+      sessionStorage.removeItem("phome_session_token");
+      sessionStorage.removeItem("phome_user_id");
+      window.location.replace("login.html");
+      return;
+    }
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Chargement impossible.");
+    }
+
+    currentBalance = Number(data.balance || 0);
+    document.getElementById("balanceAmount").innerHTML =
+      money(currentBalance) + ' <small>FCFA</small>';
+    document.getElementById("totalAmount").innerHTML =
+      money(data.total_cumule) + ' <small>FCFA</small>';
+
+    document.getElementById("phoneLabel").textContent =
+      "•••• " + String(data.user?.phone_last4 || "••••");
+
+    document.getElementById("checkinLabel").textContent =
+      data.checked_in_today ? "Pointage effectué aujourd'hui" : "Pointage quotidien";
+
+    showTicker(data.recent_recharges);
+  } catch (error) {
+    showError("Impossible de charger vos données. Vérifiez votre connexion puis actualisez la page.");
+    document.getElementById("tickerText").textContent =
+      "Les informations seront affichées dès que la connexion sera rétablie.";
+  }
+}
+
+document.getElementById("laterTelegram").addEventListener("click", () => {
+  document.getElementById("telegramModal").classList.remove("show");
+  sessionStorage.setItem("phome_telegram_dismissed", "1");
+});
+
+document.getElementById("joinTelegram").addEventListener("click", () => {
+  document.getElementById("telegramModal").classList.remove("show");
+  sessionStorage.setItem("phome_telegram_dismissed", "1");
+});
+
+function showTelegramPopup() {
+  if (!sessionStorage.getItem("phome_telegram_dismissed")) {
+    document.getElementById("telegramModal").classList.add("show");
+  }
+}
+
+loadDashboard();
+setTimeout(showTelegramPopup, 900);
+</script>
+</body>
+      </html>
+  
