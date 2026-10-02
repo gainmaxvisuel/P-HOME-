@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pointage — P HOME</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #151b23;
+      --surface2: #10151c;
+      --border: #2a323d;
+      --text: #f1f5f9;
+      --muted: #8d98a7;
+      --blue: #3b8cff;
+      --green: #3ddc84;
+      --red: #ff5c67;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+      margin: auto;
+      padding: 18px 15px 40px;
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: white;
+      font-size: 23px;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .logo {
+      width: 43px;
+      height: 43px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    /* INTRO */
+    .intro {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      background: linear-gradient(145deg, #151b23, #10151c);
+      margin-bottom: 15px;
+    }
+
+    .intro h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* POINTAGE CARD */
+    .checkin-card {
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      background: var(--surface);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .date-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 13px;
+    }
+
+    .reward {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .reward-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 21px;
+    }
+
+    .check-button {
+      width: 100%;
+      height: 50px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--blue);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .check-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .status.success {
+      color: var(--green);
+      background: rgba(61,220,132,.08);
+      border: 1px solid rgba(61,220,132,.25);
+    }
+
+    .status.error {
+      color: var(--red);
+      background: rgba(255,92,103,.08);
+      border: 1px solid rgba(255,92,103,.25);
+    }
+
+    /* HISTORIQUE */
+    .section-title {
+      margin: 23px 0 11px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .history {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .checkin {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+    }
+
+    .checkin-date {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .checkin-time {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .checkin-reward {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .empty {
+      padding: 25px 15px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+      font-size: 13px;
+    }
+
+    .loading {
+      padding: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* INFO */
+    .info {
+      margin-top: 18px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface2);
+    }
+
+    .info-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .info p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <div class="header-left">
+
+      <button
+        class="back"
+        type="button"
+        onclick="goBack()">
+        ‹
+      </button>
+
+      <div class="title">
+        Pointage
+      </div>
+
+    </div>
+
+    <img
+      src="logoreg.png"
+      class="logo"
+      alt="P HOME">
+
+  </header>
+
+
+  <!-- INTRO -->
+  <div class="intro">
+
+    <h2>
+      Pointage quotidien
+    </h2>
+
+    <p>
+      Revenez chaque jour pour effectuer votre pointage.
+      La récompense et l'état du pointage sont déterminés
+      par les paramètres enregistrés sur P HOME.
+    </p>
+
+  </div>
+
+
+  <!-- POINTAGE -->
+  <section class="checkin-card">
+
+    <div
+      id="dateLabel"
+      class="date-label">
+      Chargement...
+    </div>
+
+    <div
+      id="reward"
+      class="reward">
+      —
+    </div>
+
+    <div class="reward-label">
+      Récompense du pointage
+    </div>
+
+    <button
+      id="checkButton"
+      class="check-button"
+      type="button"
+      onclick="doCheckin()">
+
+      Pointer maintenant
+
+    </button>
+
+    <div
+      id="status"
+      class="status">
+    </div>
+
+  </section>
+
+
+  <!-- HISTORIQUE -->
+  <div class="section-title">
+    Derniers pointages
+  </div>
+
+  <div
+    id="history"
+    class="history">
+
+    <div class="loading">
+      Chargement des pointages...
+    </div>
+
+  </div>
+
+
+  <!-- INFORMATION -->
+  <div class="info">
+
+    <div class="info-title">
+      Information
+    </div>
+
+    <p>
+      Un seul pointage peut être effectué pour une même
+      journée. Les récompenses sont enregistrées dans
+      votre compte après validation du pointage.
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  const API_BASE =
+    "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1";
+
+  /*
+   * Endpoint serveur du pointage.
+   * Le token de session P HOME est envoyé
+   * au serveur afin d'identifier l'utilisateur.
+   */
+  const CHECKIN_FUNCTION =
+    API_BASE + "/p-home-checkin";
+
+
+  const token =
+    sessionStorage.getItem(
+      "phome_session_token"
+    );
+
+
+  /* =========================
+     SESSION
+  ========================= */
+
+  if (!token) {
+    window.location.href = "login.html";
+  }
+
+
+  /* =========================
+     RETOUR
+  ========================= */
+
+  function goBack() {
+    window.location.href = "moi.html";
+  }
+
+
+  /* =========================
+     DATE
+  ========================= */
+
+  function formatDate(date) {
+
+    return new Intl.DateTimeFormat(
+      "fr-FR",
+      {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      }
+    ).format(date);
+
+  }
+
+
+  document.getElementById(
+    "dateLabel"
+  ).textContent =
+    formatDate(new Date());
+
+
+  /* =========================
+     MESSAGE
+  ========================= */
+
+  function showStatus(
+    text,
+    type
+  ) {
+
+    const status =
+      document.getElementById(
+        "status"
+      );
+
+    status.textContent = text;
+
+    status.className =
+      "status show " + type;
+
+  }
+
+
+  function hideStatus() {
+
+    const status =
+      document.getElementById(
+        "status"
+      );
+
+    status.textContent = "";
+
+    status.className =
+      "status";
+
+  }
+
+
+  /* =========================
+     CHARGEMENT
+  ========================= */
+
+  async function loadCheckin() {
+
+    try {
+
+      const response =
+        await fetch(
+          CHECKIN_FUNCTION,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              token: token,
+              action: "status"
+            })
+          }
+        );
+
+
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+
+        sessionStorage.removeItem(
+          "phome_session_token"
+        );
+
+        window.location.href =
+          "login.html";
+
+        return;
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok || !data.success) {
+
+        throw new Error(
+          data.message ||
+          data.error ||
+          "Impossible de récupérer les informations du pointage."
+        );
+
+      }
+
+
+      /* Récompense définie par le serveur */
+
+      if (
+        data.reward !== null &&
+        data.reward !== undefined
+      ) {
+
+        document.getElementById(
+          "reward"
+        ).textContent =
+          Number(data.reward).toLocaleString(
+            "fr-FR"
+          ) + " FCFA";
+
+      } else {
+
+        document.getElementById(
+          "reward"
+        ).textContent = "—";
+
+      }
+
+
+      /*
+       * Pointage déjà effectué
+       */
+
+      if (data.checked_in_today === true) {
+
+        const button =
+          document.getElementById(
+            "checkButton"
+          );
+
+        button.disabled = true;
+
+        button.textContent =
+          "Pointage déjà effectué";
+
+        showStatus(
+          "Votre pointage d'aujourd'hui a déjà été enregistré.",
+          "success"
+        );
+
+      } else {
+
+        const button =
+          document.getElementById(
+            "checkButton"
+          );
+
+        button.disabled = false;
+
+        button.textContent =
+          "Pointer maintenant";
+
+      }
+
+
+      renderHistory(
+        data.history || []
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Erreur pointage :",
+        error
+      );
+
+      showStatus(
+        error.message ||
+        "Échec de la récupération.",
+        "error"
+      );
+
+      document.getElementById(
+        "history"
+      ).innerHTML = `
+        <div class="empty">
+          Impossible de charger l'historique.
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  /* =========================
+     HISTORIQUE
+  ========================= */
+
+  function renderHistory(items) {
+
+    const container =
+      document.getElementById(
+        "history"
+      );
+
+
+    if (
+      !Array.isArray(items) ||
+      items.length === 0
+    ) {
+
+      container.innerHTML = `
+        <div class="empty">
+          Aucun pointage enregistré.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML =
+      items.map(item => {
+
+        const date =
+          item.checked_at ||
+          item.created_at;
+
+        const formattedDate =
+          date
+            ? new Intl.DateTimeFormat(
+                "fr-FR",
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric"
+                }
+              ).format(
+                new Date(date)
+              )
+            : "—";
+
+
+        const formattedTime =
+          date
+            ? new Intl.DateTimeFormat(
+                "fr-FR",
+                {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                }
+              ).format(
+                new Date(date)
+              )
+            : "—";
+
+
+        const amount =
+          item.amount ??
+          item.reward ??
+          0;
+
+
+        return `
+          <div class="checkin">
+
+            <div>
+
+              <div class="checkin-date">
+                ${escapeHtml(formattedDate)}
+              </div>
+
+              <div class="checkin-time">
+                ${escapeHtml(formattedTime)}
+              </div>
+
+            </div>
+
+            <div class="checkin-reward">
+              +${Number(amount).toLocaleString("fr-FR")} FCFA
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+
+  }
+
+
+  /* =========================
+     SECURITE HTML
+  ========================= */
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  /* =========================
+     EFFECTUER LE POINTAGE
+  ========================= */
+
+  async function doCheckin() {
+
+    hideStatus();
+
+
+    const button =
+      document.getElementById(
+        "checkButton"
+      );
+
+
+    button.disabled = true;
+
+    button.textContent =
+      "Validation...";
+
+
+    try {
+
+      const response =
+        await fetch(
+          CHECKIN_FUNCTION,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+
+              token: token,
+
+              action: "checkin"
+
+            })
+          }
+        );
+
+
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+
+        sessionStorage.removeItem(
+          "phome_session_token"
+        );
+
+        window.location.href =
+          "login.html";
+
+        return;
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          data.error ||
+          "Le pointage n'a pas pu être effectué."
+        );
+
+      }
+
+
+      /*
+       * Le serveur confirme le montant
+       * réellement attribué.
+       */
+
+      const reward =
+        data.reward ??
+        data.amount;
+
+
+      showStatus(
+        reward !== undefined
+          ? "Pointage enregistré. +" +
+            Number(reward).toLocaleString(
+              "fr-FR"
+            ) +
+            " FCFA ont été ajoutés à votre compte."
+          : "Pointage enregistré avec succès.",
+        "success"
+      );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Pointage déjà effectué";
+
+
+      /*
+       * Recharge l'état et l'historique
+       * depuis la base.
+       */
+
+      await loadCheckin();
+
+
+    } catch (error) {
+
+      console.error(
+        "Erreur pointage :",
+        error
+      );
+
+      showStatus(
+        error.message ||
+        "Impossible d'effectuer le pointage.",
+        "error"
+      );
+
+      button.disabled = false;
+
+      button.textContent =
+        "Pointer maintenant";
+
+    }
+
+  }
+
+
+  /* =========================
+     INITIALISATION
+  ========================= */
+
+  loadCheckin();
+
+
+  /*
+   * Actualisation automatique
+   * toutes les 30 secondes.
+   */
+
+  setInterval(
+    loadCheckin,
+    30000
+  );
+
+</script>
+
+</body>
+</html>
