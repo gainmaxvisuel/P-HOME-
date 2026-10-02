@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d1117">
+
+  <title>À propos de PUMA | P HOME</title>
+
+  <style>
+    :root{
+      --bg:#0d1117;
+      --surface:#151b23;
+      --surface2:#10151c;
+      --border:#2a323d;
+      --text:#f2f4f7;
+      --muted:#929ca9;
+      --blue:#3b8cff;
+      --blue-soft:rgba(59,140,255,.12);
+      --green:#3ddc84;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      min-height:100vh;
+    }
+
+    .page{
+      width:100%;
+      max-width:560px;
+      margin:auto;
+      padding:16px 15px 35px;
+    }
+
+    /* HEADER */
+
+    .header{
+      height:52px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
+
+    .back{
+      width:40px;
+      height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:11px;
+      color:var(--text);
+      text-decoration:none;
+    }
+
+    .back svg{
+      width:20px;
+      height:20px;
+    }
+
+    .header-title{
+      font-size:17px;
+      font-weight:750;
+    }
+
+    .header-logo{
+      width:55px;
+      height:40px;
+      object-fit:contain;
+    }
+
+    /* HERO */
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(59,140,255,.14),
+          transparent 55%
+        ),
+        var(--surface);
+
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:38px 22px 32px;
+      text-align:center;
+      margin-bottom:12px;
+    }
+
+    .hero-line{
+      width:45px;
+      height:3px;
+      background:var(--text);
+      margin:0 auto 20px;
+      border-radius:5px;
+    }
+
+    .puma{
+      font-size:42px;
+      line-height:1;
+      font-weight:950;
+      letter-spacing:4px;
+      margin-bottom:13px;
+    }
+
+    .hero-title{
+      font-size:20px;
+      font-weight:750;
+      margin-bottom:10px;
+    }
+
+    .hero-text{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.75;
+    }
+
+    /* INTRO */
+
+    .section{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px 18px;
+      margin-bottom:12px;
+    }
+
+    .section-number{
+      color:var(--blue);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+
+    .section-title{
+      font-size:18px;
+      font-weight:780;
+      margin-bottom:12px;
+    }
+
+    .section p{
+      color:#c5ccd4;
+      font-size:13px;
+      line-height:1.8;
+      margin-bottom:11px;
+    }
+
+    .section p:last-child{
+      margin-bottom:0;
+    }
+
+    /* QUOTE */
+
+    .quote{
+      margin-top:15px;
+      padding:15px;
+      border-left:3px solid var(--blue);
+      background:var(--blue-soft);
+      border-radius:0 10px 10px 0;
+      color:#dbe3ec;
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    /* TIMELINE */
+
+    .timeline{
+      margin-top:5px;
+    }
+
+    .timeline-item{
+      position:relative;
+      padding:0 0 22px 25px;
+      border-left:1px solid var(--border-strong);
+      margin-left:6px;
+    }
+
+    .timeline-item:last-child{
+      border-left-color:transparent;
+      padding-bottom:0;
+    }
+
+    .timeline-item::before{
+      content:"";
+      position:absolute;
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:var(--blue);
+      left:-5px;
+      top:3px;
+      box-shadow:0 0 0 4px rgba(59,140,255,.10);
+    }
+
+    .timeline-year{
+      color:var(--blue);
+      font-size:12px;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+
+    .timeline-title{
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:5px;
+    }
+
+    .timeline-text{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    /* CATEGORIES */
+
+    .categories{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:9px;
+      margin-top:15px;
+    }
+
+    .category{
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:14px;
+    }
+
+    .category-title{
+      font-size:13px;
+      font-weight:750;
+      margin-bottom:6px;
+    }
+
+    .category-text{
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.6;
+    }
+
+    /* FACTS */
+
+    .facts{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:9px;
+      margin-top:15px;
+    }
+
+    .fact{
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:15px 12px;
+    }
+
+    .fact-value{
+      font-size:19px;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+
+    .fact-label{
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.5;
+    }
+
+    /* LIST */
+
+    .list{
+      margin-top:13px;
+    }
+
+    .list-item{
+      display:flex;
+      gap:10px;
+      padding:10px 0;
+      border-bottom:1px solid var(--border);
+    }
+
+    .list-item:last-child{
+      border-bottom:0;
+      padding-bottom:0;
+    }
+
+    .dot{
+      width:7px;
+      height:7px;
+      min-width:7px;
+      border-radius:50%;
+      background:var(--blue);
+      margin-top:6px;
+    }
+
+    .list-text{
+      color:#c5ccd4;
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    /* SUSTAINABILITY */
+
+    .green-box{
+      margin-top:14px;
+      padding:16px;
+      background:rgba(61,220,132,.07);
+      border:1px solid rgba(61,220,132,.18);
+      border-radius:12px;
+    }
+
+    .green-title{
+      color:var(--green);
+      font-size:13px;
+      font-weight:750;
+      margin-bottom:7px;
+    }
+
+    .green-text{
+      color:#bdc8c2;
+      font-size:12px;
+      line-height:1.7;
+    }
+
+    /* CONCLUSION */
+
+    .conclusion{
+      text-align:center;
+      padding:24px 18px;
+    }
+
+    .conclusion-title{
+      font-size:19px;
+      font-weight:800;
+      margin-bottom:9px;
+    }
+
+    .conclusion p{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.75;
+    }
+
+    /* BUTTON */
+
+    .return{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      height:49px;
+      margin-top:15px;
+      border-radius:12px;
+      background:var(--blue);
+      color:#fff;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:750;
+    }
+
+    .return:active{
+      transform:scale(.98);
+    }
+
+    .source-note{
+      text-align:center;
+      color:#626d7a;
+      font-size:10px;
+      line-height:1.6;
+      margin-top:16px;
+      padding:0 8px;
+    }
+
+    @media(max-width:380px){
+      .puma{
+        font-size:36px;
+      }
+
+      .hero-title{
+        font-size:18px;
+      }
+
+      .categories,
+      .facts{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <a href="moi.html" class="back" aria-label="Retour">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+
+    </a>
+
+    <div class="header-title">
+      À propos
+    </div>
+
+    <img
+      src="logoreg.png"
+      class="header-logo"
+      alt="P HOME"
+    >
+
+  </header>
+
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-line"></div>
+
+    <div class="puma">
+      PUMA
+    </div>
+
+    <div class="hero-title">
+      Une histoire de sport, de culture et d'innovation
+    </div>
+
+    <div class="hero-text">
+      Depuis 1948, PUMA développe des produits destinés
+      à accompagner les sportifs et participe également
+      à l'évolution de la culture sportive et du lifestyle.
+    </div>
+
+  </section>
+
+
+  <!-- PRESENTATION -->
+  <section class="section">
+
+    <div class="section-number">
+      Présentation
+    </div>
+
+    <div class="section-title">
+      Qu'est-ce que PUMA ?
+    </div>
+
+    <p>
+      PUMA est une marque internationale spécialisée dans
+      les produits sportifs et le lifestyle. L'entreprise
+      conçoit, développe et commercialise principalement
+      des chaussures, des vêtements et des accessoires.
+    </p>
+
+    <p>
+      Son activité s'étend à plusieurs univers sportifs,
+      notamment le football, la course, l'entraînement,
+      le basketball, le golf et le motorsport.
+    </p>
+
+    <p>
+      La marque possède également une importante dimension
+      lifestyle. Certains produits initialement conçus pour
+      le sport sont devenus des éléments de la mode et de
+      la culture populaire.
+    </p>
+
+  </section>
+
+
+  <!-- ORIGINES -->
+  <section class="section">
+
+    <div class="section-number">
+      Les origines
+    </div>
+
+    <div class="section-title">
+      Une histoire née en Allemagne
+    </div>
+
+    <p>
+      L'histoire de PUMA trouve ses racines à Herzogenaurach,
+      en Allemagne. Rudolf Dassler et son frère Adolf
+      Dassler avaient auparavant développé ensemble une
+      activité consacrée aux chaussures de sport.
+    </p>
+
+    <p>
+      En 1948, les deux frères se séparèrent et Rudolf Dassler
+      créa sa propre entreprise. La société fut enregistrée
+      au début de cette même année et les activités commencèrent
+      le 1er juin 1948.
+    </p>
+
+    <p>
+      Le nom PUMA fut ensuite officiellement enregistré comme
+      marque le 1er octobre 1948. Cette date marque le début
+      de l'histoire de PUMA en tant que marque indépendante.
+    </p>
+
+    <div class="quote">
+      L'identité de la marque s'inspire du puma, un animal
+      associé par son fondateur à la vitesse, la force,
+      l'endurance et l'agilité.
+    </div>
+
+  </section>
+
+
+  <!-- CHRONOLOGIE -->
+  <section class="section">
+
+    <div class="section-number">
+      Une histoire en plusieurs étapes
+    </div>
+
+    <div class="section-title">
+      Les grandes étapes de PUMA
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          1948
+        </div>
+
+        <div class="timeline-title">
+          Naissance de PUMA
+        </div>
+
+        <div class="timeline-text">
+          Rudolf Dassler crée sa propre entreprise après
+          la séparation avec son frère. La marque PUMA
+          est officiellement enregistrée la même année.
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          1950
+        </div>
+
+        <div class="timeline-title">
+          Les premières chaussures de football
+        </div>
+
+        <div class="timeline-text">
+          PUMA développe l'ATOM, l'une de ses premières
+          chaussures de football, et commence à construire
+          son histoire dans cette discipline.
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          1952
+        </div>
+
+        <div class="timeline-title">
+          Innovation dans le football
+        </div>
+
+        <div class="timeline-text">
+          La SUPER ATOM introduit une innovation importante
+          avec des crampons vissés, participant à l'évolution
+          des chaussures de football.
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          1958
+        </div>
+
+        <div class="timeline-title">
+          Le FORMSTRIP
+        </div>
+
+        <div class="timeline-text">
+          PUMA dépose le FORMSTRIP, élément qui devient
+          progressivement l'un des signes visuels les plus
+          reconnaissables de la marque.
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          1985
+        </div>
+
+        <div class="timeline-title">
+          Technologie et course
+        </div>
+
+        <div class="timeline-text">
+          PUMA développe son système Running System et
+          présente ensuite la RS-Computer Shoe, une chaussure
+          intégrant une technologie capable d'enregistrer
+          certaines données liées à la course.
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          1991
+        </div>
+
+        <div class="timeline-title">
+          Le système DISC
+        </div>
+
+        <div class="timeline-text">
+          PUMA présente le DISC System, un système de serrage
+          sans lacets destiné aux chaussures de sport.
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          Années 1990
+        </div>
+
+        <div class="timeline-title">
+          Sport et mode
+        </div>
+
+        <div class="timeline-text">
+          PUMA développe davantage le lien entre les vêtements
+          et chaussures de sport et la mode, contribuant à
+          l'émergence du segment sportstyle.
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          2014
+        </div>
+
+        <div class="timeline-title">
+          FOREVER FASTER
+        </div>
+
+        <div class="timeline-text">
+          PUMA lance la campagne FOREVER FASTER, mettant
+          l'accent sur la vitesse, la performance et une
+          identité sportive forte.
+        </div>
+
+      </div>
+
+
+      <div class="timeline-item">
+
+        <div class="timeline-year">
+          2020s
+        </div>
+
+        <div class="timeline-title">
+          Innovation continue
+        </div>
+
+        <div class="timeline-text">
+          La marque continue de développer ses technologies
+          dans différents sports, notamment avec ses gammes
+          de football, de running et ses technologies NITRO.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SPORTS -->
+  <section class="section">
+
+    <div class="section-number">
+      Univers sportifs
+    </div>
+
+    <div class="section-title">
+      PUMA dans le sport
+    </div>
+
+    <p>
+      Le sport constitue l'un des piliers historiques de PUMA.
+      La marque fournit des produits destinés aux athlètes
+      et développe des collaborations avec différentes équipes,
+      fédérations et personnalités sportives.
+    </p>
+
+    <div class="categories">
+
+      <div class="category">
+
+        <div class="category-title">
+          Football
+        </div>
+
+        <div class="category-text">
+          Chaussures, maillots et équipements pour les joueurs
+          et les équipes.
+        </div>
+
+      </div>
+
+
+      <div class="category">
+
+        <div class="category-title">
+          Running
+        </div>
+
+        <div class="category-text">
+          Chaussures et technologies destinées à la course
+          et à la performance.
+        </div>
+
+      </div>
+
+
+      <div class="category">
+
+        <div class="category-title">
+          Basketball
+        </div>
+
+        <div class="category-text">
+          Produits combinant performance sportive et culture
+          basketball.
+        </div>
+
+      </div>
+
+
+      <div class="category">
+
+        <div class="category-title">
+          Motorsport
+        </div>
+
+        <div class="category-text">
+          Chaussures, vêtements et équipements liés au sport
+          automobile.
+        </div>
+
+      </div>
+
+
+      <div class="category">
+
+        <div class="category-title">
+          Golf
+        </div>
+
+        <div class="category-text">
+          Produits et équipements développés autour du golf
+          avec COBRA PUMA GOLF.
+        </div>
+
+      </div>
+
+
+      <div class="category">
+
+        <div class="category-title">
+          Training
+        </div>
+
+        <div class="category-text">
+          Produits conçus pour accompagner les entraînements
+          et différentes activités physiques.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PRODUITS -->
+  <section class="section">
+
+    <div class="section-number">
+      Les produits
+    </div>
+
+    <div class="section-title">
+      Chaussures, vêtements et accessoires
+    </div>
+
+    <p>
+      L'offre de PUMA comprend plusieurs catégories de produits.
+      Les chaussures occupent une place importante dans l'histoire
+      de la marque, depuis ses premiers modèles sportifs jusqu'aux
+      technologies contemporaines.
+    </p>
+
+    <p>
+      La marque propose également des vêtements sportifs,
+      des tenues d'entraînement, des maillots, ainsi que des
+      accessoires destinés au sport et au quotidien.
+    </p>
+
+    <p>
+      Certaines collections appartiennent à l'univers Sportstyle,
+      dans lequel l'héritage sportif de PUMA rencontre les tendances
+      de la mode et de la culture.
+    </p>
+
+  </section>
+
+
+  <!-- IDENTITE -->
+  <section class="section">
+
+    <div class="section-number">
+      Identité
+    </div>
+
+    <div class="section-title">
+      Le symbole du félin
+    </div>
+
+    <p>
+      L'identité visuelle de PUMA repose notamment sur son célèbre
+      logo représentant un félin bondissant. Ce symbole est devenu
+      l'un des éléments les plus reconnaissables de la marque.
+    </p>
+
+    <p>
+      Le FORMSTRIP constitue également un élément historique
+      important. Créé à l'origine pour contribuer à stabiliser
+      le pied dans la chaussure, il est devenu au fil du temps
+      un élément graphique associé à PUMA.
+    </p>
+
+  </section>
+
+
+  <!-- INNOVATION -->
+  <section class="section">
+
+    <div class="section-number">
+      Innovation
+    </div>
+
+    <div class="section-title">
+      La technologie au service du sport
+    </div>
+
+    <p>
+      L'innovation occupe une place importante dans l'histoire
+      de PUMA. La marque a développé différentes technologies
+      destinées à améliorer le confort, la stabilité, l'amorti
+      et les performances des sportifs.
+    </p>
+
+    <p>
+      Parmi les exemples historiques figurent le système DISC,
+      le Running System et, plus récemment, les technologies
+      NITRO utilisées dans certaines chaussures de course.
+    </p>
+
+    <p>
+      Cette approche consiste à faire évoluer les produits en
+      fonction des besoins des athlètes et des différentes
+      pratiques sportives.
+    </p>
+
+  </section>
+
+
+  <!-- SPORTSTYLE -->
+  <section class="section">
+
+    <div class="section-number">
+      Sportstyle
+    </div>
+
+    <div class="section-title">
+      Quand le sport rencontre la culture
+    </div>
+
+    <p>
+      PUMA ne se limite pas aux terrains et aux pistes.
+      Au fil des années, certains produits sportifs de la marque
+      sont également devenus des références dans la mode.
+    </p>
+
+    <p>
+      Les modèles comme la Suede ou la Speedcat illustrent
+      cette relation entre l'héritage sportif, la mode,
+      la musique, l'art et la culture populaire.
+    </p>
+
+    <p>
+      Cette dimension permet à PUMA de proposer des produits
+      qui peuvent être utilisés aussi bien dans un contexte
+      sportif que dans la vie quotidienne.
+    </p>
+
+  </section>
+
+
+  <!-- CULTURE -->
+  <section class="section">
+
+    <div class="section-number">
+      Sport & culture
+    </div>
+
+    <div class="section-title">
+      Une marque liée aux générations
+    </div>
+
+    <p>
+      L'histoire de PUMA est également liée à de nombreuses
+      générations d'athlètes et de personnalités issues du
+      monde du sport et de la culture.
+    </p>
+
+    <p>
+      Les collaborations et partenariats ont contribué à faire
+      évoluer l'image de la marque et à créer des passerelles
+      entre performance sportive, créativité et expression
+      personnelle.
+    </p>
+
+  </section>
+
+
+    <!-- INTERNATIONAL -->
+  <section class="section">
+
+    <div class="section-number">
+      Présence internationale
+    </div>
+
+    <div class="section-title">
+      Une marque présente dans le monde entier
+    </div>
+
+    <p>
+      PUMA est aujourd'hui une marque internationale dont
+      les produits sont disponibles sur de nombreux marchés
+      à travers le monde.
+    </p>
+
+    <p>
+      Son siège se trouve à Herzogenaurach, en Allemagne,
+      la ville qui constitue également le berceau historique
+      de la marque.
+    </p>
+
+    <p>
+      Grâce à son développement international, PUMA s'adresse
+      à des consommateurs aux profils et aux cultures très
+      différents, tout en conservant une identité de marque
+      reconnaissable.
+    </p>
+
+    <div class="facts">
+
+      <div class="fact">
+        <div class="fact-value">
+          1948
+        </div>
+        <div class="fact-label">
+          Année de création de PUMA
+        </div>
+      </div>
+
+      <div class="fact">
+        <div class="fact-value">
+          Allemagne
+        </div>
+        <div class="fact-label">
+          Pays d'origine de la marque
+        </div>
+      </div>
+
+      <div class="fact">
+        <div class="fact-value">
+          Sport
+        </div>
+        <div class="fact-label">
+          Cœur historique de l'activité
+        </div>
+      </div>
+
+      <div class="fact">
+        <div class="fact-value">
+          Monde
+        </div>
+        <div class="fact-label">
+          Présence internationale
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- DURABILITÉ -->
+  <section class="section">
+
+    <div class="section-number">
+      Responsabilité
+    </div>
+
+    <div class="section-title">
+      Durabilité et avenir
+    </div>
+
+    <p>
+      PUMA indique intégrer les enjeux environnementaux et
+      sociaux dans différentes parties de ses activités.
+      Cette démarche concerne notamment ses produits,
+      ses fournisseurs et sa chaîne d'approvisionnement.
+    </p>
+
+    <p>
+      L'entreprise travaille également sur différents
+      objectifs liés au climat, aux droits humains et
+      à la circularité.
+    </p>
+
+    <p>
+      La marque cherche ainsi à faire évoluer ses pratiques
+      tout en poursuivant le développement de ses produits
+      sportifs et lifestyle.
+    </p>
+
+    <div class="green-box">
+
+      <div class="green-title">
+        Vision 2030
+      </div>
+
+      <div class="green-text">
+        PUMA présente sa Vision 2030 comme un ensemble
+        d'objectifs renforcés concernant notamment le climat,
+        les droits humains et la circularité.
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- HÉRITAGE -->
+  <section class="section">
+
+    <div class="section-number">
+      Héritage
+    </div>
+
+    <div class="section-title">
+      Une histoire construite sur plusieurs générations
+    </div>
+
+    <p>
+      Depuis sa création en 1948, PUMA a accompagné plusieurs
+      générations de sportifs et a participé à de nombreux
+      moments importants de l'histoire du sport.
+    </p>
+
+    <p>
+      L'héritage de la marque repose notamment sur ses
+      chaussures de sport, ses innovations techniques,
+      ses collaborations avec des athlètes et son évolution
+      progressive vers le lifestyle.
+    </p>
+
+    <p>
+      Cet héritage permet à PUMA de conserver certains
+      éléments historiques de son identité tout en développant
+      de nouvelles collections adaptées aux tendances actuelles.
+    </p>
+
+  </section>
+
+
+  <!-- IDENTITÉ -->
+  <section class="section">
+
+    <div class="section-number">
+      Identité de la marque
+    </div>
+
+    <div class="section-title">
+      Une identité reconnaissable
+    </div>
+
+    <p>
+      L'identité de PUMA repose notamment sur son célèbre
+      logo représentant un félin bondissant. Ce symbole
+      accompagne la marque depuis plusieurs décennies.
+    </p>
+
+    <p>
+      Le FORMSTRIP constitue également un élément important
+      de l'identité visuelle de PUMA. Initialement pensé
+      comme un élément fonctionnel de la chaussure, il est
+      progressivement devenu un signe distinctif de la marque.
+    </p>
+
+    <p>
+      Ces éléments permettent à PUMA de conserver une identité
+      facilement reconnaissable sur ses chaussures, vêtements
+      et différents produits.
+    </p>
+
+  </section>
+
+
+  <!-- VALEURS -->
+  <section class="section">
+
+    <div class="section-number">
+      Esprit de la marque
+    </div>
+
+    <div class="section-title">
+      Performance, innovation et créativité
+    </div>
+
+    <div class="list">
+
+      <div class="list-item">
+
+        <div class="dot"></div>
+
+        <div class="list-text">
+          <strong>Performance :</strong>
+          développer des produits destinés à accompagner
+          les sportifs dans leurs activités.
+        </div>
+
+      </div>
+
+
+      <div class="list-item">
+
+        <div class="dot"></div>
+
+        <div class="list-text">
+          <strong>Innovation :</strong>
+          rechercher de nouvelles technologies permettant
+          de faire évoluer les équipements sportifs.
+        </div>
+
+      </div>
+
+
+      <div class="list-item">
+
+        <div class="dot"></div>
+
+        <div class="list-text">
+          <strong>Style :</strong>
+          associer l'héritage sportif à la mode et
+          au lifestyle.
+        </div>
+
+      </div>
+
+
+      <div class="list-item">
+
+        <div class="dot"></div>
+
+        <div class="list-text">
+          <strong>Créativité :</strong>
+          développer des collections et collaborations
+          qui rapprochent le sport et la culture.
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PUMA AUJOURD'HUI -->
+  <section class="section">
+
+    <div class="section-number">
+      Aujourd'hui
+    </div>
+
+    <div class="section-title">
+      PUMA aujourd'hui
+    </div>
+
+    <p>
+      PUMA poursuit son développement autour de plusieurs
+      grands univers : le sport, la performance, le lifestyle,
+      la mode et la culture.
+    </p>
+
+    <p>
+      La marque continue de développer des chaussures,
+      vêtements et accessoires destinés aussi bien aux
+      sportifs qu'aux personnes qui souhaitent intégrer
+      l'esthétique sportive à leur quotidien.
+    </p>
+
+    <p>
+      Son évolution repose sur l'association entre son
+      héritage historique et le développement de nouveaux
+      produits, technologies et collaborations.
+    </p>
+
+  </section>
+
+
+  <!-- CONCLUSION -->
+  <section class="section conclusion">
+
+    <div class="conclusion-title">
+      Une histoire qui continue
+    </div>
+
+    <p>
+      De ses débuts en Allemagne en 1948 à sa présence
+      internationale actuelle, PUMA a construit une histoire
+      fortement liée au sport et à son évolution.
+    </p>
+
+    <p style="margin-top:10px;">
+      La marque continue aujourd'hui à développer son identité
+      autour de la performance, de l'innovation, du style
+      et de la culture sportive.
+    </p>
+
+  </section>
+
+
+  <!-- RETOUR -->
+  <a href="moi.html" class="return">
+    Retour à mon espace
+  </a>
+
+
+  <div class="source-note">
+    Informations générales présentées à titre informatif.
+    P HOME n'est pas présenté comme propriétaire, partenaire
+    ou représentant officiel de PUMA.
+  </div>
+
+</main>
+
+</body>
+</html>
