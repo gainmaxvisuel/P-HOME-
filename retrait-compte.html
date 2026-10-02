@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Lier le compte de retrait — P HOME</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #151b23;
+      --surface2: #10151c;
+      --border: #2a323d;
+      --text: #f1f5f9;
+      --muted: #8d98a7;
+      --blue: #3b8cff;
+      --green: #3ddc84;
+      --red: #ff5c67;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+      margin: auto;
+      padding: 18px 15px 40px;
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .title {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .header-logo {
+      width: 43px;
+      height: 43px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    /* INTRO */
+    .intro {
+      background: linear-gradient(145deg, #151b23, #10151c);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .intro h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* CURRENT ACCOUNT */
+    .current {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 17px;
+      margin-bottom: 18px;
+    }
+
+    .current.show {
+      display: block;
+    }
+
+    .current-title {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 13px;
+    }
+
+    .current-main {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .current-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      background: white;
+      padding: 7px;
+      object-fit: contain;
+    }
+
+    .current-name {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .current-number {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .current-beneficiary {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .current-beneficiary span {
+      color: var(--muted);
+    }
+
+    /* OPERATOR */
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 20px 0 11px;
+    }
+
+    .operators {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .operator {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      min-height: 92px;
+      padding: 14px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .operator:hover {
+      border-color: #46515f;
+    }
+
+    .operator.selected {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 1px rgba(59,140,255,.25);
+      background: #121c29;
+    }
+
+    .operator-check {
+      position: absolute;
+      top: 9px;
+      right: 9px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .operator.selected .operator-check {
+      display: flex;
+    }
+
+    .operator-logo-box {
+      width: 45px;
+      height: 45px;
+      background: white;
+      border-radius: 12px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 9px;
+    }
+
+    .operator-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .operator-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* FORM */
+    .form {
+      margin-top: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 17px;
+    }
+
+    .form.hidden {
+      display: none;
+    }
+
+    .selected-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+
+    .selected-label strong {
+      color: white;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      color: #c8d0da;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .field input {
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      border-radius: 12px;
+      color: white;
+      padding: 0 13px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .field input:focus {
+      border-color: var(--blue);
+    }
+
+    .field small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 55px;
+    }
+
+    .show-password {
+      position: absolute;
+      right: 8px;
+      top: 7px;
+      height: 34px;
+      padding: 0 9px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    /* BUTTON */
+    .save {
+      width: 100%;
+      height: 49px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--blue);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .save:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* MESSAGE */
+    .message {
+      display: none;
+      padding: 12px 13px;
+      border-radius: 12px;
+      margin-top: 14px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: rgba(61,220,132,.08);
+      border: 1px solid rgba(61,220,132,.25);
+      color: var(--green);
+    }
+
+    .message.error {
+      background: rgba(255,92,103,.08);
+      border: 1px solid rgba(255,92,103,.25);
+      color: var(--red);
+    }
+
+    .loading {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 20px 0;
+    }
+
+    /* SECURITY */
+    .security {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 15px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+
+    .security-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .security p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 360px) {
+      .operators {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <button class="back" onclick="goBack()">‹</button>
+      <div class="title">Compte de retrait</div>
+    </div>
+
+    <img
+      src="logoreg.png"
+      class="header-logo"
+      alt="P HOME">
+  </header>
+
+
+  <!-- INTRO -->
+  <div class="intro">
+    <h2>Lier votre compte de retrait</h2>
+    <p>
+      Sélectionnez votre opérateur Mobile Money puis renseignez
+      les informations correspondant exactement au titulaire du compte.
+    </p>
+  </div>
+
+
+  <!-- COMPTE ACTUEL -->
+  <div id="currentAccount" class="current">
+
+    <div class="current-title">
+      Compte actuellement lié
+    </div>
+
+    <div class="current-main">
+
+      <img
+        id="currentLogo"
+        class="current-logo"
+        alt="Opérateur">
+
+      <div>
+        <div id="currentOperator" class="current-name">
+          —
+        </div>
+
+        <div id="currentNumber" class="current-number">
+          —
+        </div>
+      </div>
+
+    </div>
+
+    <div class="current-beneficiary">
+      <span>Titulaire :</span>
+      <strong id="currentBeneficiary">—</strong>
+    </div>
+
+  </div>
+
+
+  <!-- OPERATEURS -->
+  <div class="section-title">
+    Choisissez votre opérateur
+  </div>
+
+  <div class="operators">
+
+    <!-- ORANGE -->
+    <div
+      class="operator"
+      data-operator="orange"
+      data-name="Orange Money"
+      onclick="selectOperator(this)">
+
+      <div class="operator-check">✓</div>
+
+      <div class="operator-logo-box">
+        <img
+          class="operator-logo"
+          src="https://www.google.com/s2/favicons?domain=orange.bf&sz=128"
+          alt="Orange Money">
+      </div>
+
+      <div class="operator-name">
+        Orange Money
+      </div>
+
+    </div>
+
+
+    <!-- MOOV -->
+    <div
+      class="operator"
+      data-operator="moov"
+      data-name="Moov Money"
+      onclick="selectOperator(this)">
+
+      <div class="operator-check">✓</div>
+
+      <div class="operator-logo-box">
+        <img
+          class="operator-logo"
+          src="https://www.google.com/s2/favicons?domain=moov-africa.bf&sz=128"
+          alt="Moov Money">
+      </div>
+
+      <div class="operator-name">
+        Moov Money
+      </div>
+
+    </div>
+
+
+    <!-- WAVE -->
+    <div
+      class="operator"
+      data-operator="wave"
+      data-name="Wave"
+      onclick="selectOperator(this)">
+
+      <div class="operator-check">✓</div>
+
+      <div class="operator-logo-box">
+        <img
+          class="operator-logo"
+          src="https://www.google.com/s2/favicons?domain=wave.com&sz=128"
+          alt="Wave">
+      </div>
+
+      <div class="operator-name">
+        Wave
+      </div>
+
+    </div>
+
+
+    <!-- MTN -->
+    <div
+      class="operator"
+      data-operator="mtn"
+      data-name="MTN Mobile Money"
+      onclick="selectOperator(this)">
+
+      <div class="operator-check">✓</div>
+
+      <div class="operator-logo-box">
+        <img
+          class="operator-logo"
+          src="https://www.google.com/s2/favicons?domain=mtn.bf&sz=128"
+          alt="MTN Mobile Money">
+      </div>
+
+      <div class="operator-name">
+        MTN Mobile Money
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- FORM -->
+  <div id="form" class="form hidden">
+
+    <div class="selected-label">
+      Opérateur sélectionné :
+      <strong id="selectedOperator">—</strong>
+    </div>
+
+
+    <!-- NUMERO -->
+    <div class="field">
+
+      <label for="phone">
+        Numéro Mobile Money
+      </label>
+
+      <input
+        id="phone"
+        type="tel"
+        inputmode="numeric"
+        autocomplete="tel"
+        placeholder="Ex. 70123456"
+        maxlength="15">
+
+      <small>
+        Entrez le numéro associé au compte Mobile Money.
+      </small>
+
+    </div>
+
+
+    <!-- BENEFICIAIRE -->
+    <div class="field">
+
+      <label for="beneficiary">
+        Nom du titulaire
+      </label>
+
+      <input
+        id="beneficiary"
+        type="text"
+        autocomplete="name"
+        placeholder="Nom complet du titulaire">
+
+      <small>
+        Le nom doit correspondre au titulaire du compte.
+      </small>
+
+    </div>
+
+
+    <!-- MOT DE PASSE TRANSACTION -->
+    <div class="field">
+
+      <label for="transactionPassword">
+        Mot de passe de transaction
+      </label>
+
+      <div class="password-wrap">
+
+        <input
+          id="transactionPassword"
+          type="password"
+          autocomplete="new-password"
+          placeholder="6 caractères minimum">
+
+        <button
+          type="button"
+          class="show-password"
+          onclick="togglePassword()">
+          Afficher
+        </button>
+
+      </div>
+
+      <small>
+        Ce mot de passe protège vos opérations de retrait.
+        Il est différent du mot de passe de connexion.
+      </small>
+
+    </div>
+
+
+    <!-- ANCIEN MOT DE PASSE -->
+    <div
+      id="oldPasswordField"
+      class="field"
+      style="display:none;">
+
+      <label for="oldTransactionPassword">
+        Ancien mot de passe de transaction
+      </label>
+
+      <div class="password-wrap">
+
+        <input
+          id="oldTransactionPassword"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Mot de passe actuel">
+
+      </div>
+
+      <small>
+        Il est demandé uniquement lorsque vous modifiez
+        un compte de retrait déjà enregistré.
+      </small>
+
+    </div>
+
+
+    <button
+      id="saveButton"
+      class="save"
+      onclick="saveAccount()">
+
+      Enregistrer le compte
+
+    </button>
+
+
+    <div id="message" class="message"></div>
+
+  </div>
+
+
+  <!-- SECURITE -->
+  <div class="security">
+
+    <div class="security-title">
+      Sécurité de votre compte
+    </div>
+
+    <p>
+      Vos informations de retrait sont utilisées uniquement
+      pour traiter vos opérations. Ne communiquez jamais votre
+      mot de passe de transaction à une autre personne.
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  const API_BASE =
+    "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1";
+
+  const EVENTS_FUNCTION =
+    API_BASE + "/p-home-withdrawal-account";
+
+  let token =
+    sessionStorage.getItem("phome_session_token");
+
+  let selectedOperator = null;
+  let selectedOperatorName = null;
+
+
+  /* =========================
+     AUTH
+  ========================= */
+
+  if (!token) {
+    window.location.href = "login.html";
+  }
+
+
+  /* =========================
+     RETOUR
+  ========================= */
+
+  function goBack() {
+    window.location.href = "moi.html";
+  }
+
+
+  /* =========================
+     SELECTION OPERATEUR
+  ========================= */
+
+  function selectOperator(element) {
+
+    document
+      .querySelectorAll(".operator")
+      .forEach(item => {
+        item.classList.remove("selected");
+      });
+
+    element.classList.add("selected");
+
+    selectedOperator =
+      element.dataset.operator;
+
+    selectedOperatorName =
+      element.dataset.name;
+
+    document.getElementById(
+      "selectedOperator"
+    ).textContent =
+      selectedOperatorName;
+
+    document
+      .getElementById("form")
+      .classList.remove("hidden");
+
+    hideMessage();
+
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth"
+    });
+  }
+
+
+  /* =========================
+     AFFICHAGE MOT DE PASSE
+  ========================= */
+
+  function togglePassword() {
+
+    const input =
+      document.getElementById(
+        "transactionPassword"
+      );
+
+    const button =
+      document.querySelector(
+        ".show-password"
+      );
+
+    if (input.type === "password") {
+
+      input.type = "text";
+      button.textContent = "Masquer";
+
+    } else {
+
+      input.type = "password";
+      button.textContent = "Afficher";
+
+    }
+  }
+
+
+  /* =========================
+     MESSAGE
+  ========================= */
+
+  function showMessage(
+    text,
+    type
+  ) {
+
+    const box =
+      document.getElementById("message");
+
+    box.textContent = text;
+
+    box.className =
+      "message show " + type;
+  }
+
+
+  function hideMessage() {
+
+    const box =
+      document.getElementById("message");
+
+    box.className = "message";
+    box.textContent = "";
+  }
+
+
+  /* =========================
+     MASQUER NUMERO
+  ========================= */
+
+  function maskPhone(phone) {
+
+    if (!phone) return "—";
+
+    const clean =
+      String(phone)
+        .replace(/\s+/g, "");
+
+    if (clean.length <= 4) {
+      return clean;
+    }
+
+    return "••••" +
+      clean.slice(-4);
+  }
+
+
+  /* =========================
+     DETERMINER LOGO
+  ========================= */
+
+  function getLogo(operator) {
+
+    const logos = {
+
+      orange:
+        "https://www.google.com/s2/favicons?domain=orange.bf&sz=128",
+
+      moov:
+        "https://www.google.com/s2/favicons?domain=moov-africa.bf&sz=128",
+
+      wave:
+        "https://www.google.com/s2/favicons?domain=wave.com&sz=128",
+
+      mtn:
+        "https://www.google.com/s2/favicons?domain=mtn.bf&sz=128"
+
+    };
+
+    return logos[operator] || "";
+  }
+
+
+  /* =========================
+     CHARGER COMPTE EXISTANT
+  ========================= */
+
+  async function loadAccount() {
+
+    try {
+
+      const response =
+        await fetch(
+          EVENTS_FUNCTION,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              token: token
+            })
+          }
+        );
+
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+        sessionStorage.removeItem(
+          "phome_session_token"
+        );
+
+        window.location.href =
+          "login.html";
+
+        return;
+      }
+
+      const data =
+        await response.json();
+
+      if (
+        !data.success ||
+        !data.account
+      ) {
+        return;
+      }
+
+      const account =
+        data.account;
+
+      document
+        .getElementById(
+          "currentAccount"
+        )
+        .classList.add("show");
+
+      document
+        .getElementById(
+          "currentOperator"
+        )
+        .textContent =
+        account.operator || "—";
+
+      document
+        .getElementById(
+          "currentNumber"
+        )
+        .textContent =
+        maskPhone(
+          account.beneficiary_number
+        );
+
+      document
+        .getElementById(
+          "currentBeneficiary"
+        )
+        .textContent =
+        account.beneficiary_name || "—";
+
+      const currentLogo =
+        document.getElementById(
+          "currentLogo"
+        );
+
+      const normalized =
+        normalizeOperator(
+          account.operator
+        );
+
+      currentLogo.src =
+        getLogo(normalized);
+
+      /*
+       * Si un compte existe déjà,
+       * on permet sa modification.
+       */
+
+      document
+        .getElementById(
+          "oldPasswordField"
+        )
+        .style.display = "block";
+
+    } catch (error) {
+
+      console.error(
+        "Erreur chargement compte:",
+        error
+      );
+
+    }
+  }
+
+
+  /* =========================
+     NORMALISATION
+  ========================= */
+
+  function normalizeOperator(operator) {
+
+    const value =
+      String(operator || "")
+        .toLowerCase()
+        .trim();
+
+    if (
+      value.includes("orange")
+    ) return "orange";
+
+    if (
+      value.includes("moov")
+    ) return "moov";
+
+    if (
+      value.includes("wave")
+    ) return "wave";
+
+    if (
+      value.includes("mtn")
+    ) return "mtn";
+
+    return value;
+  }
+
+
+  /* =========================
+     VALIDATION
+  ========================= */
+
+  function validateForm() {
+
+    if (!selectedOperator) {
+
+      showMessage(
+        "Veuillez sélectionner votre opérateur.",
+        "error"
+      );
+
+      return false;
+    }
+
+    const phone =
+      document
+        .getElementById("phone")
+        .value
+        .replace(/\s+/g, "");
+
+    const beneficiary =
+      document
+        .getElementById("beneficiary")
+        .value
+        .trim();
+
+    const password =
+      document
+        .getElementById(
+          "transactionPassword"
+        )
+        .value;
+
+    if (!/^\d{8,15}$/.test(phone)) {
+
+      showMessage(
+        "Veuillez saisir un numéro valide.",
+        "error"
+      );
+
+      return false;
+    }
+
+    if (
+      beneficiary.length < 2 ||
+      beneficiary.length > 100
+    ) {
+
+      showMessage(
+        "Veuillez saisir le nom complet du titulaire.",
+        "error"
+      );
+
+      return false;
+    }
+
+    if (password.length < 6) {
+
+      showMessage(
+        "Le mot de passe de transaction doit contenir au moins 6 caractères.",
+        "error"
+      );
+
+      return false;
+    }
+
+    return true;
+  }
+
+
+  /* =========================
+     ENREGISTRER
+  ========================= */
+
+  async function saveAccount() {
+
+    hideMessage();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    const button =
+      document.getElementById("saveButton");
+
+    const phone =
+      document
+        .getElementById("phone")
+        .value
+        .replace(/\s+/g, "");
+
+    const beneficiary =
+      document
+        .getElementById("beneficiary")
+        .value
+        .trim();
+
+    const transactionPassword =
+      document
+        .getElementById("transactionPassword")
+        .value;
+
+    const oldTransactionPassword =
+      document
+        .getElementById("oldTransactionPassword")
+        .value;
+
+    button.disabled = true;
+    button.textContent = "Enregistrement...";
+
+    try {
+
+      const response = await fetch(
+        API_BASE + "/p-home-save-withdrawal-account",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+
+            token: token,
+
+            operator: selectedOperator,
+
+            beneficiary_number: phone,
+
+            beneficiary_name: beneficiary,
+
+            transaction_password:
+              transactionPassword,
+
+            old_transaction_password:
+              oldTransactionPassword
+
+          })
+        }
+      );
+
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+
+        sessionStorage.removeItem(
+          "phome_session_token"
+        );
+
+        window.location.href = "login.html";
+        return;
+      }
+
+      let data;
+
+      try {
+        data = await response.json();
+      } catch (e) {
+        throw new Error(
+          "Réponse invalide du serveur."
+        );
+      }
+
+      if (!response.ok || !data.success) {
+
+        throw new Error(
+          data.message ||
+          data.error ||
+          "Impossible d'enregistrer le compte."
+        );
+      }
+
+      showMessage(
+        data.message ||
+        "Votre compte de retrait a été enregistré avec succès.",
+        "success"
+      );
+
+      /* Nettoyage des mots de passe */
+      document.getElementById(
+        "transactionPassword"
+      ).value = "";
+
+      document.getElementById(
+        "oldTransactionPassword"
+      ).value = "";
+
+      /* Actualiser le compte affiché */
+      await loadAccount();
+
+    } catch (error) {
+
+      console.error(
+        "Erreur sauvegarde compte :",
+        error
+      );
+
+      showMessage(
+        error.message ||
+        "Une erreur est survenue lors de l'enregistrement.",
+        "error"
+      );
+
+    } finally {
+
+      button.disabled = false;
+      button.textContent =
+        "Enregistrer le compte";
+    }
+  }
+
+
+  /* =========================
+     INITIALISATION
+  ========================= */
+
+  loadAccount();
+
+</script>
+
+</body>
+</html>
