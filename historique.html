@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historique - P HOME</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #0d1117;
+      color: #f2f5f8;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+      margin: auto;
+      padding: 18px 14px 30px;
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid #2a323d;
+      background: #151b23;
+      color: #fff;
+      font-size: 21px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    /* INTRO */
+    .intro {
+      background: #151b23;
+      border: 1px solid #2a323d;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .intro-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .intro-text {
+      color: #8e9aaa;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* FILTERS */
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+
+    .filter {
+      border: 1px solid #2a323d;
+      background: #10151c;
+      color: #9da8b5;
+      border-radius: 9px;
+      padding: 10px 4px;
+      font-size: 11px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .filter.active {
+      background: #3b8cff;
+      color: #fff;
+      border-color: #3b8cff;
+    }
+
+    /* LIST */
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    #historyList {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* TRANSACTION */
+    .transaction {
+      background: #151b23;
+      border: 1px solid #2a323d;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .transaction-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 14px;
+      border-bottom: 1px solid #2a323d;
+    }
+
+    .transaction-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .transaction-date {
+      font-size: 11px;
+      color: #7f8b99;
+      margin-top: 4px;
+    }
+
+    /* STATUS */
+    .status {
+      padding: 6px 9px;
+      border-radius: 7px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-success {
+      color: #3ddc84;
+      background: rgba(61, 220, 132, .10);
+      border: 1px solid rgba(61, 220, 132, .25);
+    }
+
+    .status-pending {
+      color: #f0c75e;
+      background: rgba(240, 199, 94, .10);
+      border: 1px solid rgba(240, 199, 94, .25);
+    }
+
+    .status-danger {
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, .10);
+      border: 1px solid rgba(255, 107, 107, .25);
+    }
+
+    .status-info {
+      color: #5da5ff;
+      background: rgba(59, 140, 255, .10);
+      border: 1px solid rgba(59, 140, 255, .25);
+    }
+
+    /* CASES */
+    .transaction-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .cell {
+      min-height: 62px;
+      padding: 11px 13px;
+      border-bottom: 1px solid #2a323d;
+    }
+
+    .cell:nth-child(odd) {
+      border-right: 1px solid #2a323d;
+    }
+
+    .cell-label {
+      color: #778391;
+      font-size: 10px;
+      margin-bottom: 6px;
+    }
+
+    .cell-value {
+      color: #f2f5f8;
+      font-size: 13px;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .amount-positive {
+      color: #3ddc84;
+    }
+
+    .amount-negative {
+      color: #ff7373;
+    }
+
+    .amount-neutral {
+      color: #f2f5f8;
+    }
+
+    /* EMPTY / LOADING */
+    .message {
+      background: #151b23;
+      border: 1px solid #2a323d;
+      border-radius: 14px;
+      padding: 28px 18px;
+      text-align: center;
+      color: #7f8b99;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .loader {
+      width: 25px;
+      height: 25px;
+      border: 3px solid #2a323d;
+      border-top-color: #3b8cff;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error {
+      color: #ff7777;
+    }
+
+    .refresh-info {
+      text-align: center;
+      color: #687482;
+      font-size: 10px;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 390px) {
+      .filters {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .transaction-head {
+        grid-template-columns: 1fr;
+      }
+
+      .status {
+        width: fit-content;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <header class="header">
+    <div class="header-left">
+      <button class="back" onclick="goBack()">‹</button>
+      <div class="title">Historique</div>
+    </div>
+
+    <img src="logoreg.png" class="logo" alt="P HOME">
+  </header>
+
+  <div class="intro">
+    <div class="intro-title">Historique de vos opérations</div>
+    <div class="intro-text">
+      Retrouvez ici vos recharges, retraits, achats de produits,
+      commissions et récompenses. Les statuts sont actualisés
+      automatiquement.
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="filter active" data-filter="all">Tout</button>
+    <button class="filter" data-filter="recharge">Recharge</button>
+    <button class="filter" data-filter="retrait">Retrait</button>
+    <button class="filter" data-filter="achat_produit">Produits</button>
+  </div>
+
+  <div class="section-title">Vos opérations</div>
+
+  <div id="historyList">
+    <div class="message">
+      <div class="loader"></div>
+      Chargement de votre historique...
+    </div>
+  </div>
+
+  <div class="refresh-info">
+    Actualisation automatique des statuts
+  </div>
+
+</div>
+
+<script>
+  const HISTORY_URL =
+    "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1/p-home-history";
+
+  const token = sessionStorage.getItem("phome_session_token");
+
+  if (!token) {
+    window.location.href = "login.html";
+  }
+
+  let allHistory = [];
+  let currentFilter = "all";
+
+  function goBack() {
+    window.location.href = "moi.html";
+  }
+
+  function formatMoney(value) {
+    const number = Number(value || 0);
+
+    return number.toLocaleString("fr-FR", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    }) + " F";
+  }
+
+  function formatDate(date) {
+    if (!date) return "-";
+
+    const d = new Date(date);
+
+    if (isNaN(d.getTime())) return "-";
+
+    return d.toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    }) + " • " +
+    d.toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function statusInfo(status) {
+    const s = String(status || "").toLowerCase();
+
+    const map = {
+      approved: {
+        text: "Validé",
+        className: "status-success"
+      },
+      completed: {
+        text: "Terminé",
+        className: "status-success"
+      },
+      success: {
+        text: "Réussi",
+        className: "status-success"
+      },
+      successful: {
+        text: "Réussi",
+        className: "status-success"
+      },
+      active: {
+        text: "Actif",
+        className: "status-success"
+      },
+      paid: {
+        text: "Payé",
+        className: "status-success"
+      },
+      processing: {
+        text: "En traitement",
+        className: "status-info"
+      },
+      checked: {
+        text: "Vérification",
+        className: "status-info"
+      },
+      requested: {
+        text: "Demandé",
+        className: "status-pending"
+      },
+      pending: {
+        text: "En attente",
+        className: "status-pending"
+      },
+      pending_activation: {
+        text: "En attente",
+        className: "status-pending"
+      },
+      inactive: {
+        text: "Inactif",
+        className: "status-pending"
+      },
+      rejected: {
+        text: "Rejeté",
+        className: "status-danger"
+      },
+      refused: {
+        text: "Refusé",
+        className: "status-danger"
+      },
+      cancelled: {
+        text: "Annulé",
+        className: "status-danger"
+      },
+      canceled: {
+        text: "Annulé",
+        className: "status-danger"
+      },
+      failed: {
+        text: "Échec",
+        className: "status-danger"
+      }
+    };
+
+    return map[s] || {
+      text: status || "En attente",
+      className: "status-pending"
+    };
+  }
+
+  function typeLabel(item) {
+    switch (item.type) {
+      case "recharge":
+        return "Recharge";
+
+      case "retrait":
+        return "Retrait";
+
+      case "achat_produit":
+        return "Achat produit";
+
+      case "commission":
+        return "Commission";
+
+      case "recompense":
+        return "Récompense";
+
+      default:
+        return item.title || "Transaction";
+    }
+  }
+
+  function amountClass(item) {
+    if (
+      item.type === "recharge" ||
+      item.type === "commission" ||
+      item.type === "recompense"
+    ) {
+      return "amount-positive";
+    }
+
+    if (
+      item.type === "retrait" ||
+      item.type === "achat_produit"
+    ) {
+      return "amount-negative";
+    }
+
+    return "amount-neutral";
+  }
+
+  function amountPrefix(item) {
+    if (
+      item.type === "recharge" ||
+      item.type === "commission" ||
+      item.type === "recompense"
+    ) {
+      return "+";
+    }
+
+    if (
+      item.type === "retrait" ||
+      item.type === "achat_produit"
+    ) {
+      return "-";
+    }
+
+    return "";
+  }
+
+  function renderHistory() {
+
+    const container = document.getElementById("historyList");
+
+    let list = allHistory;
+
+    if (currentFilter !== "all") {
+      list = allHistory.filter(item => item.type === currentFilter);
+    }
+
+    if (!list.length) {
+      container.innerHTML = `
+        <div class="message">
+          Aucune opération dans cette catégorie.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = list.map(item => {
+
+      const status = statusInfo(item.status);
+
+      const type = typeLabel(item);
+
+      let cells = "";
+
+      if (item.type === "retrait") {
+
+        cells = `
+          <div class="cell">
+            <div class="cell-label">Montant du retrait</div>
+            <div class="cell-value amount-negative">
+              -${formatMoney(item.amount)}
+            </div>
+          </div>
+
+          <div class="cell">
+            <div class="cell-label">Frais</div>
+            <div class="cell-value">
+              ${formatMoney(item.fee)}
+            </div>
+          </div>
+
+          <div class="cell">
+            <div class="cell-label">Montant reçu</div>
+            <div class="cell-value amount-positive">
+              ${formatMoney(item.received_amount)}
+            </div>
+          </div>
+
+          <div class="cell">
+            <div class="cell-label">Statut</div>
+            <div class="cell-value">
+              <span class="status ${status.className}">
+                ${escapeHtml(status.text)}
+              </span>
+            </div>
+          </div>
+
+          ${
+            item.reason
+            ? `
+              <div class="cell">
+                <div class="cell-label">Motif</div>
+                <div class="cell-value">
+                  ${escapeHtml(item.reason)}
+                </div>
+              </div>
+            `
+            : ""
+          }
+        `;
+
+      } else {
+
+        cells = `
+          <div class="cell">
+            <div class="cell-label">Montant</div>
+            <div class="cell-value ${amountClass(item)}">
+              ${amountPrefix(item)}${formatMoney(item.amount)}
+            </div>
+          </div>
+
+          <div class="cell">
+            <div class="cell-label">Statut</div>
+            <div class="cell-value">
+              <span class="status ${status.className}">
+                ${escapeHtml(status.text)}
+              </span>
+            </div>
+          </div>
+
+          ${
+            item.reference
+            ? `
+              <div class="cell">
+                <div class="cell-label">Référence</div>
+                <div class="cell-value">
+                  ${escapeHtml(item.reference)}
+                </div>
+              </div>
+            `
+            : ""
+          }
+
+          ${
+            item.level
+            ? `
+              <div class="cell">
+                <div class="cell-label">Niveau</div>
+                <div class="cell-value">
+                  Niveau ${escapeHtml(item.level)}
+                  ${
+                    item.percentage
+                    ? " • " + escapeHtml(item.percentage) + "%"
+                    : ""
+                  }
+                </div>
+              </div>
+            `
+            : ""
+          }
+
+          ${
+            item.reason
+            ? `
+              <div class="cell">
+                <div class="cell-label">Motif</div>
+                <div class="cell-value">
+                  ${escapeHtml(item.reason)}
+                </div>
+              </div>
+            `
+            : ""
+          }
+        `;
+      }
+
+      return `
+        <div class="transaction">
+
+          <div class="transaction-head">
+
+            <div>
+              <div class="transaction-title">
+                ${escapeHtml(type)}
+              </div>
+
+              <div class="transaction-date">
+                ${formatDate(item.created_at)}
+              </div>
+            </div>
+
+            <span class="status ${status.className}">
+              ${escapeHtml(status.text)}
+            </span>
+
+          </div>
+
+          <div class="transaction-body">
+            ${cells}
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+  async function loadHistory(showLoader = false) {
+
+    const container = document.getElementById("historyList");
+
+    if (showLoader) {
+      container.innerHTML = `
+        <div class="message">
+          <div class="loader"></div>
+          Chargement de votre historique...
+        </div>
+      `;
+    }
+
+    try {
+
+      const response = await fetch(HISTORY_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          token: token
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+
+        if (
+          response.status === 401 ||
+          response.status === 403
+        ) {
+          sessionStorage.removeItem("phome_session_token");
+          window.location.href = "login.html";
+          return;
+        }
+
+        throw new Error(
+          data.message || "Impossible de charger l'historique."
+        );
+      }
+
+      allHistory = Array.isArray(data.history)
+        ? data.history
+        : [];
+
+      renderHistory();
+
+    } catch (error) {
+
+      console.error(error);
+
+      if (showLoader) {
+        container.innerHTML = `
+          <div class="message error">
+            Impossible de charger l'historique.<br><br>
+            Vérifiez votre connexion puis réessayez.
+          </div>
+        `;
+      }
+    }
+  }
+
+  document.querySelectorAll(".filter").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document.querySelectorAll(".filter")
+        .forEach(btn => btn.classList.remove("active"));
+
+      button.classList.add("active");
+
+      currentFilter = button.dataset.filter;
+
+      renderHistory();
+    });
+
+  });
+
+  loadHistory(true);
+
+  /*
+    Actualisation automatique.
+    Le serveur relit les statuts actuels
+    directement dans Supabase.
+  */
+  setInterval(() => {
+    loadHistory(false);
+  }, 10000);
+
+</script>
+
+</body>
+</html>
