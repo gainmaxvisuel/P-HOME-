@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centres de tâches - P HOME</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0d1117;
+      color: #f1f5f9;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+      margin: auto;
+      padding: 18px 15px 35px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid #2a323d;
+      background: #151b23;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .intro {
+      background: #151b23;
+      border: 1px solid #2a323d;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+
+    .intro-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .intro-text {
+      color: #9da7b5;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .tracking {
+      background: #10151c;
+      border: 1px solid #2a323d;
+      border-radius: 16px;
+      padding: 17px;
+      margin-bottom: 20px;
+    }
+
+    .tracking-label {
+      color: #9da7b5;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .tracking-value {
+      font-size: 27px;
+      font-weight: 700;
+    }
+
+    .tracking-value span {
+      color: #9da7b5;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 20px 0 12px;
+    }
+
+    .task {
+      background: #151b23;
+      border: 1px solid #2a323d;
+      border-radius: 18px;
+      padding: 17px;
+      margin-bottom: 13px;
+    }
+
+    .task-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .task-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .task-description {
+      color: #8f9aaa;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .reward {
+      white-space: nowrap;
+      color: #3ddc84;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 17px;
+      margin-bottom: 7px;
+      font-size: 12px;
+      color: #9da7b5;
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      background: #0d1117;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #252d37;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #3b8cff;
+      border-radius: 10px;
+      transition: width .35s ease;
+    }
+
+    .task-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #9da7b5;
+    }
+
+    .status.ready {
+      color: #3ddc84;
+    }
+
+    .status.claimed {
+      color: #3b8cff;
+    }
+
+    .claim-btn {
+      border: none;
+      background: #3b8cff;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .claim-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .empty {
+      background: #151b23;
+      border: 1px solid #2a323d;
+      border-radius: 16px;
+      padding: 22px;
+      text-align: center;
+      color: #8f9aaa;
+      font-size: 14px;
+    }
+
+    .message {
+      display: none;
+      margin-bottom: 15px;
+      padding: 13px 15px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(61, 220, 132, .10);
+      border: 1px solid rgba(61, 220, 132, .30);
+      color: #3ddc84;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(255, 75, 75, .10);
+      border: 1px solid rgba(255, 75, 75, .30);
+      color: #ff7777;
+    }
+
+    .loading {
+      text-align: center;
+      color: #8f9aaa;
+      padding: 25px 10px;
+      font-size: 14px;
+    }
+
+    .refresh {
+      width: 100%;
+      border: 1px solid #2a323d;
+      background: #151b23;
+      color: #dce3eb;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .refresh:active,
+    .claim-btn:active,
+    .back:active {
+      transform: scale(.98);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <header class="header">
+    <div class="header-left">
+      <button class="back" onclick="history.back()">‹</button>
+      <div class="title">Centres de tâches</div>
+    </div>
+
+    <img src="logoreg.png" class="logo" alt="P HOME">
+  </header>
+
+  <div id="message" class="message"></div>
+
+  <section class="intro">
+    <div class="intro-title">Suivi des tâches</div>
+    <div class="intro-text">
+      Développez votre équipe en invitant de nouveaux utilisateurs.
+      Lorsque vos filleuls atteignent les conditions demandées,
+      vous pouvez réclamer vous-même la récompense correspondante.
+    </div>
+  </section>
+
+  <section class="tracking">
+    <div class="tracking-label">
+      Filleuls investisseurs suivis
+    </div>
+
+    <div class="tracking-value">
+      <span id="investingCount">—</span>
+      <span>personnes</span>
+    </div>
+  </section>
+
+  <div class="section-title">Tâches disponibles</div>
+
+  <div id="tasks">
+    <div class="loading">Chargement des tâches...</div>
+  </div>
+
+  <button class="refresh" onclick="loadTasks()">
+    Actualiser le suivi
+  </button>
+
+</div>
+
+<script>
+  const API =
+    "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1/p-home-tasks";
+
+  const token = sessionStorage.getItem("phome_session_token");
+
+  if (!token) {
+    window.location.href = "login.html";
+  }
+
+  const tasksContainer = document.getElementById("tasks");
+  const investingCount = document.getElementById("investingCount");
+  const messageBox = document.getElementById("message");
+
+  function showMessage(text, type) {
+    messageBox.className = "message " + type;
+    messageBox.textContent = text;
+
+    setTimeout(() => {
+      messageBox.className = "message";
+      messageBox.textContent = "";
+    }, 4000);
+  }
+
+  function money(value) {
+    return Number(value || 0).toLocaleString("fr-FR") + " FCFA";
+  }
+
+  async function loadTasks() {
+    tasksContainer.innerHTML =
+      '<div class="loading">Chargement des tâches...</div>';
+
+    try {
+      const response = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          token: token,
+          action: "status"
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.status === 401 || response.status === 403) {
+        sessionStorage.removeItem("phome_session_token");
+        window.location.href = "login.html";
+        return;
+      }
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Impossible de récupérer les tâches.");
+      }
+
+      investingCount.textContent = data.investing_referrals || 0;
+
+      renderTasks(data.tasks || []);
+
+    } catch (error) {
+      console.error(error);
+
+      tasksContainer.innerHTML = `
+        <div class="empty">
+          Impossible de récupérer les tâches.
+        </div>
+      `;
+
+      showMessage(
+        error.message || "Erreur de connexion.",
+        "error"
+      );
+    }
+  }
+
+  function renderTasks(tasks) {
+
+    if (!tasks.length) {
+      tasksContainer.innerHTML = `
+        <div class="empty">
+          Aucune tâche disponible pour le moment.
+        </div>
+      `;
+      return;
+    }
+
+    tasksContainer.innerHTML = tasks.map(task => {
+
+      let statusText = "";
+      let statusClass = "";
+      let button = "";
+
+      if (task.claimed) {
+
+        statusText = "Récompense déjà réclamée";
+        statusClass = "claimed";
+
+        button = `
+          <button class="claim-btn" disabled>
+            Récompensé
+          </button>
+        `;
+
+      } else if (task.can_claim) {
+
+        statusText = "Objectif atteint";
+        statusClass = "ready";
+
+        button = `
+          <button
+            class="claim-btn"
+            onclick="claimTask(${task.threshold}, this)"
+          >
+            Réclamer
+          </button>
+        `;
+
+      } else {
+
+        statusText =
+          "Encore " +
+          Math.max(0, task.threshold - task.current) +
+          " personne(s) à atteindre";
+
+        button = `
+          <button class="claim-btn" disabled>
+            Verrouillé
+          </button>
+        `;
+      }
+
+      return `
+        <div class="task">
+
+          <div class="task-top">
+
+            <div>
+              <div class="task-name">
+                ${task.threshold} filleuls investisseurs
+              </div>
+
+              <div class="task-description">
+                Atteignez ${task.threshold} filleuls ayant investi
+                pour débloquer cette récompense.
+              </div>
+            </div>
+
+            <div class="reward">
+              ${money(task.reward)}
+            </div>
+
+          </div>
+
+          <div class="progress-info">
+            <span>
+              Suivi : ${task.current}/${task.threshold}
+            </span>
+
+            <span>
+              ${task.progress}%
+            </span>
+          </div>
+
+          <div class="progress">
+            <div
+              class="progress-bar"
+              style="width:${task.progress}%"
+            ></div>
+          </div>
+
+          <div class="task-bottom">
+
+            <div class="status ${statusClass}">
+              ${statusText}
+            </div>
+
+            ${button}
+
+          </div>
+
+        </div>
+      `;
+    }).join("");
+  }
+
+  async function claimTask(threshold, button) {
+
+    if (!confirm(
+      "Voulez-vous réclamer la récompense de cette tâche ?"
+    )) {
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Vérification...";
+
+    try {
+
+      const response = await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          token: token,
+          action: "claim",
+          threshold: threshold
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.status === 401 || response.status === 403) {
+        sessionStorage.removeItem("phome_session_token");
+        window.location.href = "login.html";
+        return;
+      }
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || "La réclamation a échoué."
+        );
+      }
+
+      showMessage(
+        "Réclamation réussie : +" +
+        money(data.reward) +
+        " ont été ajoutés à votre solde.",
+        "success"
+      );
+
+      await loadTasks();
+
+    } catch (error) {
+
+      console.error(error);
+
+      showMessage(
+        error.message || "Impossible de réclamer la récompense.",
+        "error"
+      );
+
+      button.disabled = false;
+      button.textContent = "Réclamer";
+    }
+  }
+
+  loadTasks();
+
+  // Actualisation automatique du suivi
+  setInterval(() => {
+    loadTasks();
+  }, 15000);
+</script>
+
+</body>
+</html>
