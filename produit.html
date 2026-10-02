@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Produits | P HOME</title>
+<style>
+:root{
+  --bg:#0d1117;
+  --surface:#151b23;
+  --surface-2:#10151c;
+  --border:#2a323d;
+  --border-strong:#3d4856;
+  --text:#f0f3f6;
+  --muted:#8b95a3;
+  --accent:#3b8cff;
+  --accent-soft:rgba(59,140,255,.16);
+  --ok:#3ddc84;
+  --ok-bg:rgba(61,220,132,.12);
+  --danger:#ff6b6b;
+  --danger-bg:rgba(255,107,107,.1);
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
+}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{max-width:560px;margin:0 auto;padding:0 18px}
+
+/* En-tête */
+.top{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:max(18px,env(safe-area-inset-top)) 0 14px;
+}
+.top h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.top img{height:34px;width:auto;max-width:120px;object-fit:contain}
+
+/* Résumé */
+.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.summary-card{
+  display:flex;flex-direction:column;gap:14px;width:100%;padding:16px;text-align:left;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  transition:border-color .15s,background .15s;
+}
+.summary-card:hover{border-color:var(--border-strong);background:#19202a}
+.icon{
+  display:grid;place-items:center;width:40px;height:40px;border-radius:12px;
+  background:var(--accent-soft);color:var(--accent);
+}
+.icon.green{background:var(--ok-bg);color:var(--ok)}
+.icon svg{width:20px;height:20px}
+.summary-value{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.1;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.summary-label{margin-top:4px;font-size:13px;color:var(--muted)}
+.summary-link{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--accent)}
+.summary-link svg{width:16px;height:16px}
+
+/* Statut */
+.status{
+  display:none;margin:16px 0 0;padding:12px 14px;border-radius:12px;font-size:14px;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--muted);
+}
+.status.show{display:block}
+.status.error{background:var(--danger-bg);border-color:rgba(255,107,107,.35);color:#ffc9c9}
+.status.success{background:var(--ok-bg);border-color:rgba(61,220,132,.35);color:#c5f5d8}
+
+/* Sections */
+.section-title{margin:28px 0 12px;font-size:17px;font-weight:700}
+.toolbar{display:flex;align-items:center;gap:10px;margin:28px 0 14px}
+.toolbar .section-title{margin:0;flex:1}
+
+.tabs{
+  display:flex;gap:4px;padding:4px;margin:12px 0 14px;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:12px;
+}
+.tab{
+  flex:1;height:38px;border:0;border-radius:9px;background:transparent;
+  color:var(--muted);font-size:14px;font-weight:600;transition:background .15s,color .15s;
+}
+.tab:hover{color:var(--text)}
+.tab[aria-selected="true"]{background:#222b37;color:var(--text)}
+
+.layout-btn{
+  display:grid;place-items:center;width:38px;height:38px;border-radius:10px;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--muted);
+}
+.layout-btn:hover{color:var(--text);border-color:var(--border-strong)}
+.layout-btn svg{width:18px;height:18px}
+
+/* Produits */
+.product-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product-list.list-mode{grid-template-columns:1fr}
+
+.product-card{
+  display:flex;flex-direction:column;min-width:0;overflow:hidden;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+}
+.product-picture{
+  aspect-ratio:16/10;display:grid;place-items:center;overflow:hidden;
+  background:linear-gradient(140deg,#1b2431,#10151c 80%);color:#4a5566;
+}
+.product-picture img{width:100%;height:100%;object-fit:cover}
+.product-symbol svg{width:34px;height:34px}
+.product-info{display:flex;flex-direction:column;flex:1;padding:14px}
+.product-name{margin:0 0 10px;font-size:15px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.price-label{font-size:12px;color:var(--muted)}
+.price{margin:0 0 12px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.price small{font-size:12px;font-weight:600;color:var(--muted);margin-left:4px}
+
+.details{margin:0;border-top:1px solid var(--border)}
+.detail-row{
+  display:flex;justify-content:space-between;gap:10px;padding:9px 0;
+  border-bottom:1px solid var(--border);font-size:13px;line-height:1.4;
+}
+.detail-row .label{color:var(--muted)}
+.detail-row .value{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+
+.buy-btn{
+  width:100%;height:46px;margin-top:auto;border:0;border-radius:12px;
+  background:#fff;color:#0d1117;font-size:15px;font-weight:700;
+  transition:background .15s,transform .05s;
+}
+.product-info .details+.buy-btn,.product-info .details+.owned-badge{margin-top:14px}
+.buy-btn:hover:not(:disabled){background:#e4e8ee}
+.buy-btn:active:not(:disabled){transform:translateY(1px)}
+.buy-btn:disabled{opacity:.6;cursor:progress}
+.owned-badge{
+  margin-top:auto;padding:11px 8px;border-radius:12px;text-align:center;
+  background:var(--ok-bg);color:var(--ok);font-size:13px;font-weight:600;
+}
+
+.list-mode .product-card{flex-direction:row}
+.list-mode .product-picture{width:128px;flex-shrink:0;aspect-ratio:auto}
+
+.empty{
+  grid-column:1/-1;padding:28px 16px;text-align:center;font-size:14px;line-height:1.6;color:var(--muted);
+  background:var(--surface-2);border:1px dashed var(--border-strong);border-radius:var(--radius);
+}
+
+/* Navigation */
+.bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:10;
+  background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bottom-nav .inner{max-width:560px;margin:0 auto;height:64px;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  font-size:12px;font-weight:500;color:var(--muted);
+}
+.nav-item svg{width:22px;height:22px}
+.nav-item:hover{color:var(--text)}
+.nav-item.active{color:var(--accent)}
+
+/* Confirmation d'achat */
+.backdrop{
+  position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(5,8,12,.74);backdrop-filter:blur(3px);
+}
+.backdrop.show{display:flex}
+.modal{
+  width:100%;max-width:380px;padding:24px 22px 18px;
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);animation:pop .22s ease-out;
+}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.modal h2{margin:0 0 6px;font-size:19px;font-weight:700}
+.modal p{margin:0;font-size:14px;line-height:1.6;color:var(--muted)}
+.modal .recap{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin:16px 0 20px;padding:14px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);
+}
+.modal .recap span{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.modal .recap b{font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.btn{
+  display:block;width:100%;height:48px;border:0;border-radius:12px;
+  font-size:15px;font-weight:700;text-align:center;
+}
+.btn.primary{background:#fff;color:#0d1117}
+.btn.primary:hover{background:#e4e8ee}
+.btn.ghost{margin-top:8px;background:transparent;color:var(--muted);font-weight:600}
+.btn.ghost:hover{color:var(--text);background:rgba(255,255,255,.05)}
+
+@media (max-width:360px){
+  .shell{padding:0 12px}
+  .summary-value{font-size:22px}
+  .product-list{gap:8px}
+  .product-info{padding:11px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.modal{animation:none}}
+</style>
+</head>
+
+<body>
+<div class="shell">
+  <header class="top">
+    <h1>Produits</h1>
+    <img src="logoreg.png" alt="P HOME">
+  </header>
+
+  <section class="summary" aria-label="Résumé">
+    <button class="summary-card" id="myProductsLink" type="button">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v8"/></svg></div>
+      <div>
+        <div class="summary-value" id="productCount">—</div>
+        <div class="summary-label">Mes produits</div>
+      </div>
+      <div class="summary-link"><span>Voir mes produits</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </div>
+    </button>
+
+    <button class="summary-card" id="incomeLink" type="button">
+      <div class="icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></div>
+      <div>
+        <div class="summary-value" id="totalIncome">—</div>
+        <div class="summary-label">Total cumulé (FCFA)</div>
+      </div>
+      <div class="summary-link"><span>Voir mes revenus</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </div>
+    </button>
+  </section>
+
+  <div id="pageStatus" class="status" role="status" aria-live="polite"></div>
+
+  <section id="myProductsSection">
+    <h2 class="section-title">Mes produits achetés</h2>
+    <div id="myProductsList" class="product-list">
+      <div class="empty">Chargement…</div>
+    </div>
+  </section>
+
+  <section id="catalogSection">
+    <div class="toolbar">
+      <h2 class="section-title">Découvrir les produits</h2>
+      <button class="layout-btn" id="layoutToggle" type="button"
+              aria-label="Passer en affichage liste" title="Changer la disposition"></button>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Catégories">
+      <button class="tab" data-tab="products" type="button" role="tab" aria-selected="true">Produits</button>
+      <button class="tab" data-tab="promotions" type="button" role="tab" aria-selected="false">Promotions</button>
+    </div>
+
+    <div id="catalogList" class="product-list" role="tabpanel">
+      <div class="empty">Chargement des produits…</div>
+    </div>
+  </section>
+</div>
+
+<nav class="bottom-nav" aria-label="Navigation principale">
+  <div class="inner">
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>
+      <span>Accueil</span>
+    </a>
+    <a class="nav-item active" href="produit.html" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v8"/></svg>
+      <span>Produit</span>
+    </a>
+    <a class="nav-item" href="equipe.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c2.1.7 3.5 2.4 3.5 5"/></svg>
+      <span>Équipe</span>
+    </a>
+    <a class="nav-item" href="moi.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>Moi</span>
+    </a>
+  </div>
+</nav>
+
+<div class="backdrop" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+  <div class="modal">
+    <h2 id="confirmTitle">Confirmer l'achat</h2>
+    <p>Le montant sera vérifié par le serveur avant la validation de votre achat.</p>
+    <div class="recap"><span id="confirmName">Produit</span><b id="confirmPrice">0 FCFA</b></div>
+    <button class="btn primary" id="confirmOk" type="button">Confirmer l'achat</button>
+    <button class="btn ghost" id="confirmCancel" type="button">Annuler</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const API_BASE =
+  "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1";
+
+const PRODUCTS_ENDPOINT = API_BASE + "/p-home-products";
+const BUY_ENDPOINT = API_BASE + "/p-home-buy-product";
+
+const token = sessionStorage.getItem("phome_session_token");
+const userId = sessionStorage.getItem("phome_user_id");
+
+const $ = id => document.getElementById(id);
+
+let catalogProducts = [];
+let promotionProducts = [];
+let myProducts = [];
+let activeTab = "products";
+let gridMode = true;
+
+const ICON_GRID = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>';
+const ICON_LIST = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
+const ICON_BOX = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v8"/></svg>';
+
+function money(value) {
+  const n = Number(value || 0);
+  return Number.isFinite(n)
+    ? Math.round(n).toLocaleString("fr-FR")
+    : "0";
+}
+
+/* Affiche un message ; un message vide masque la zone. */
+function setStatus(message, type = "") {
+  const el = $("pageStatus");
+  el.textContent = message || "";
+  el.className = "status" + (message ? " show" : "") + (type ? " " + type : "");
+}
+
+function element(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+function safeImageSource(path) {
+  if (typeof path !== "string" || !path.trim()) return "";
+  const value = path.trim();
+
+  // Ne pas inventer de bucket ni de chemin de stockage.
+  // Les URL complètes sont affichées telles qu'elles viennent de la base.
+  if (/^https:\/\/[^ ]+$/i.test(value)) return value;
+  return "";
+}
+
+function placeholder() {
+  const symbol = element("div", "product-symbol");
+  symbol.innerHTML = ICON_BOX;
+  return symbol;
+}
+
+function renderEmpty(container, message) {
+  container.replaceChildren();
+  container.appendChild(element("div", "empty", message));
+}
+
+function addDetail(parent, label, value) {
+  const row = element("div", "detail-row");
+  row.appendChild(element("span", "label", label));
+  row.appendChild(element("span", "value", value));
+  parent.appendChild(row);
+}
+
+function createProductCard(product, owned = false) {
+  const card = element("article", "product-card");
+  const picture = element("div", "product-picture");
+
+  const imageSource = safeImageSource(product.image_path);
+  if (imageSource) {
+    const img = element("img");
+    img.src = imageSource;
+    img.alt = product.name || "Produit";
+    img.loading = "lazy";
+    img.onerror = () => {
+      img.remove();
+      picture.appendChild(placeholder());
+    };
+    picture.appendChild(img);
+  } else {
+    picture.appendChild(placeholder());
+  }
+  card.appendChild(picture);
+
+  const info = element("div", "product-info");
+  info.appendChild(element("h3", "product-name", product.name || product.product_name || "Produit"));
+
+  const price = owned
+    ? Number(product.amount_invested || 0)
+    : Number(product.price || 0);
+
+  info.appendChild(element("div", "price-label", owned ? "Montant investi" : "Prix"));
+  const priceEl = element("div", "price", money(price));
+  priceEl.appendChild(element("small", "", "FCFA"));
+  info.appendChild(priceEl);
+
+  const duration = Number(product.cycle_days || 0);
+  const daily = Number(product.daily_income || 0);
+  const total = Number(product.total_income || 0);
+
+  const details = element("div", "details");
+  addDetail(details, "Durée", duration > 0 ? duration + " jours" : "—");
+  addDetail(details, "Revenu quotidien", money(daily) + " FCFA");
+  addDetail(details, "Revenu total", money(total) + " FCFA");
+  info.appendChild(details);
+
+  if (owned) {
+    info.appendChild(element("div", "owned-badge",
+      product.status === "active" ? "Produit actif" : "Achat enregistré"));
+  } else {
+    const buy = element("button", "buy-btn", "Acheter");
+    buy.type = "button";
+    buy.addEventListener("click", () => buyProduct(product, buy));
+    info.appendChild(buy);
+  }
+
+  card.appendChild(info);
+  return card;
+}
+
+function renderMyProducts() {
+  const container = $("myProductsList");
+  container.classList.toggle("list-mode", !gridMode);
+
+  if (!myProducts.length) {
+    renderEmpty(container, "Vous n'avez pas encore acheté de produit.");
+    return;
+  }
+
+  container.replaceChildren();
+  myProducts.forEach(product => {
+    container.appendChild(createProductCard(product, true));
+  });
+}
+
+function renderCatalog() {
+  const container = $("catalogList");
+  container.classList.toggle("list-mode", !gridMode);
+
+  const items = activeTab === "products"
+    ? catalogProducts
+    : promotionProducts;
+
+  container.replaceChildren();
+
+  if (!items.length) {
+    renderEmpty(
+      container,
+      activeTab === "products"
+        ? "Aucun produit disponible pour le moment."
+        : "Aucune promotion disponible pour le moment."
+    );
+    return;
+  }
+
+  items.forEach(product => {
+    container.appendChild(createProductCard(product, false));
+  });
+}
+
+function updateTabs() {
+  document.querySelectorAll("[data-tab]").forEach(button => {
+    button.setAttribute("aria-selected", button.dataset.tab === activeTab ? "true" : "false");
+  });
+}
+
+function updateLayoutButton() {
+  // L'icône indique la disposition vers laquelle on bascule.
+  $("layoutToggle").innerHTML = gridMode ? ICON_LIST : ICON_GRID;
+  $("layoutToggle").setAttribute("aria-label",
+    gridMode ? "Passer en affichage liste" : "Passer en affichage grille");
+}
+
+async function postJson(url, payload) {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (response.status === 401) {
+    sessionStorage.removeItem("phome_session_token");
+    sessionStorage.removeItem("phome_user_id");
+    window.location.href = "login.html";
+    throw new Error("Session expirée. Reconnectez-vous.");
+  }
+
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Une erreur est survenue.");
+  }
+
+  return data;
+}
+
+async function loadProducts(quiet = false) {
+  if (!token || !userId) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  if (!quiet) setStatus("Chargement de vos produits…");
+
+  try {
+    const data = await postJson(PRODUCTS_ENDPOINT, { token });
+
+    catalogProducts = Array.isArray(data.products) ? data.products : [];
+    promotionProducts = Array.isArray(data.promotions) ? data.promotions : [];
+    myProducts = Array.isArray(data.my_products) ? data.my_products : [];
+
+    $("productCount").textContent = money(
+      Number.isFinite(Number(data.product_count))
+        ? data.product_count
+        : myProducts.length
+    );
+
+    $("totalIncome").textContent = money(data.total_cumule);
+
+    renderMyProducts();
+    updateTabs();
+    renderCatalog();
+
+    if (!quiet) setStatus("");
+  } catch (error) {
+    renderEmpty($("myProductsList"), "Impossible de charger vos produits.");
+    renderEmpty($("catalogList"), "Impossible de charger le catalogue.");
+    setStatus(error.message || "Erreur de connexion.", "error");
+  }
+}
+
+/* ---------------- Confirmation d'achat ---------------- */
+
+let confirmResolve = null;
+let confirmReturnFocus = null;
+
+function confirmPurchase(name, price) {
+  $("confirmName").textContent = name;
+  $("confirmPrice").textContent = money(price) + " FCFA";
+  confirmReturnFocus = document.activeElement;
+  $("confirmModal").classList.add("show");
+  $("confirmOk").focus();
+
+  return new Promise(resolve => { confirmResolve = resolve; });
+}
+
+function closeConfirm(result) {
+  $("confirmModal").classList.remove("show");
+  if (confirmReturnFocus && confirmReturnFocus.focus) confirmReturnFocus.focus();
+  if (confirmResolve) {
+    const resolve = confirmResolve;
+    confirmResolve = null;
+    resolve(result);
+  }
+}
+
+$("confirmOk").addEventListener("click", () => closeConfirm(true));
+$("confirmCancel").addEventListener("click", () => closeConfirm(false));
+$("confirmModal").addEventListener("click", event => {
+  if (event.target === $("confirmModal")) closeConfirm(false);
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && $("confirmModal").classList.contains("show")) {
+    closeConfirm(false);
+  }
+});
+
+/* ---------------- Achat ---------------- */
+
+async function buyProduct(product, button) {
+  const productName = product.name || "ce produit";
+  const price = Number(product.price || 0);
+
+  if (!product.id || !Number.isFinite(price) || price <= 0) {
+    setStatus("Les informations de ce produit sont invalides.", "error");
+    return;
+  }
+
+  const confirmed = await confirmPurchase(productName, price);
+  if (!confirmed) return;
+
+  button.disabled = true;
+  button.textContent = "Achat en cours…";
+  setStatus("Envoi de votre demande d'achat…");
+
+  try {
+    // Appelle la fonction serveur qui exécute le RPC SQL buy_product.
+    const result = await postJson(BUY_ENDPOINT, {
+      token,
+      product_id: product.id
+    });
+
+    await loadProducts(true);
+
+    setStatus(
+      "Achat confirmé : " +
+      (result.product_name || productName) +
+      " — " + money(result.amount ?? price) + " FCFA.",
+      "success"
+    );
+
+    $("myProductsSection").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  } catch (error) {
+    setStatus(error.message || "L'achat a échoué.", "error");
+    button.disabled = false;
+    button.textContent = "Acheter";
+  }
+}
+
+/* ---------------- Interactions ---------------- */
+
+document.querySelectorAll("[data-tab]").forEach(button => {
+  button.addEventListener("click", () => {
+    activeTab = button.dataset.tab;
+    updateTabs();
+    renderCatalog();
+  });
+});
+
+$("layoutToggle").addEventListener("click", () => {
+  gridMode = !gridMode;
+  updateLayoutButton();
+  renderCatalog();
+  renderMyProducts();
+});
+
+$("myProductsLink").addEventListener("click", () => {
+  $("myProductsSection").scrollIntoView({ behavior: "smooth" });
+});
+
+$("incomeLink").addEventListener("click", () => {
+  $("myProductsSection").scrollIntoView({ behavior: "smooth" });
+});
+
+updateLayoutButton();
+loadProducts();
+</script>
+</body>
+</html>
