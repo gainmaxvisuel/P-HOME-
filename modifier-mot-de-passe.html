@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Modifier le mot de passe — P HOME</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #151b23;
+      --surface2: #10151c;
+      --border: #2a323d;
+      --text: #f1f5f9;
+      --muted: #8d98a7;
+      --blue: #3b8cff;
+      --green: #3ddc84;
+      --red: #ff5c67;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+      margin: auto;
+      padding: 18px 15px 40px;
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: white;
+      font-size: 23px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .title {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .header-logo {
+      width: 43px;
+      height: 43px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    /* INTRO */
+    .intro {
+      background: linear-gradient(145deg, #151b23, #10151c);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .intro h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* FORM */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    .field label {
+      display: block;
+      color: #c8d0da;
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      width: 100%;
+      height: 49px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      border-radius: 12px;
+      color: white;
+      padding: 0 65px 0 13px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .password-wrap input:focus {
+      border-color: var(--blue);
+    }
+
+    .show-password {
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      height: 35px;
+      padding: 0 9px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .show-password:hover {
+      color: white;
+    }
+
+    .hint {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* REQUIREMENTS */
+    .requirements {
+      margin: 4px 0 18px;
+      padding: 13px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    .requirements-title {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .requirement {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #687381;
+      flex-shrink: 0;
+    }
+
+    .requirement.valid {
+      color: var(--green);
+    }
+
+    .requirement.valid .dot {
+      background: var(--green);
+    }
+
+    /* BUTTON */
+    .save {
+      width: 100%;
+      height: 49px;
+      border: 0;
+      border-radius: 13px;
+      background: var(--blue);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .save:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* MESSAGE */
+    .message {
+      display: none;
+      padding: 12px 13px;
+      border-radius: 12px;
+      margin-top: 14px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: rgba(61,220,132,.08);
+      border: 1px solid rgba(61,220,132,.25);
+      color: var(--green);
+    }
+
+    .message.error {
+      background: rgba(255,92,103,.08);
+      border: 1px solid rgba(255,92,103,.25);
+      color: var(--red);
+    }
+
+    /* SECURITY */
+    .security {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 15px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+
+    .security-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .security p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <div class="header-left">
+
+      <button
+        class="back"
+        type="button"
+        onclick="goBack()">
+        ‹
+      </button>
+
+      <div class="title">
+        Modifier le mot de passe
+      </div>
+
+    </div>
+
+    <img
+      src="logoreg.png"
+      class="header-logo"
+      alt="P HOME">
+
+  </header>
+
+
+  <!-- INTRO -->
+  <div class="intro">
+
+    <h2>
+      Sécurisez votre compte
+    </h2>
+
+    <p>
+      Vous pouvez modifier votre mot de passe de connexion.
+      Pour effectuer cette modification, saisissez d'abord
+      votre mot de passe actuel.
+    </p>
+
+  </div>
+
+
+  <!-- FORMULAIRE -->
+  <div class="form-card">
+
+    <!-- ANCIEN MOT DE PASSE -->
+    <div class="field">
+
+      <label for="currentPassword">
+        Mot de passe actuel
+      </label>
+
+      <div class="password-wrap">
+
+        <input
+          id="currentPassword"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Votre mot de passe actuel">
+
+        <button
+          type="button"
+          class="show-password"
+          onclick="togglePassword('currentPassword', this)">
+          Afficher
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- NOUVEAU MOT DE PASSE -->
+    <div class="field">
+
+      <label for="newPassword">
+        Nouveau mot de passe
+      </label>
+
+      <div class="password-wrap">
+
+        <input
+          id="newPassword"
+          type="password"
+          autocomplete="new-password"
+          placeholder="Votre nouveau mot de passe"
+          oninput="checkRequirements()">
+
+        <button
+          type="button"
+          class="show-password"
+          onclick="togglePassword('newPassword', this)">
+          Afficher
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- CONFIRMATION -->
+    <div class="field">
+
+      <label for="confirmPassword">
+        Confirmer le nouveau mot de passe
+      </label>
+
+      <div class="password-wrap">
+
+        <input
+          id="confirmPassword"
+          type="password"
+          autocomplete="new-password"
+          placeholder="Répétez le nouveau mot de passe"
+          oninput="checkRequirements()">
+
+        <button
+          type="button"
+          class="show-password"
+          onclick="togglePassword('confirmPassword', this)">
+          Afficher
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- CONDITIONS -->
+    <div class="requirements">
+
+      <div class="requirements-title">
+        Conditions du nouveau mot de passe
+      </div>
+
+      <div
+        id="lengthRequirement"
+        class="requirement">
+
+        <span class="dot"></span>
+
+        <span>
+          Au moins 6 caractères
+        </span>
+
+      </div>
+
+      <div
+        id="matchRequirement"
+        class="requirement">
+
+        <span class="dot"></span>
+
+        <span>
+          Les deux mots de passe correspondent
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- BOUTON -->
+    <button
+      id="saveButton"
+      class="save"
+      type="button"
+      onclick="changePassword()">
+
+      Modifier le mot de passe
+
+    </button>
+
+
+    <!-- MESSAGE -->
+    <div
+      id="message"
+      class="message">
+    </div>
+
+  </div>
+
+
+  <!-- SECURITE -->
+  <div class="security">
+
+    <div class="security-title">
+      Protection du compte
+    </div>
+
+    <p>
+      Après la modification, votre nouveau mot de passe
+      sera utilisé pour vos prochaines connexions.
+      Ne partagez jamais votre mot de passe avec une autre personne.
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  const API_BASE =
+    "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1";
+
+  const CHANGE_PASSWORD_FUNCTION =
+    API_BASE + "/p-home-change-password";
+
+  const token =
+    sessionStorage.getItem(
+      "phome_session_token"
+    );
+
+
+  /* =========================
+     VERIFICATION SESSION
+  ========================= */
+
+  if (!token) {
+
+    window.location.href =
+      "login.html";
+
+  }
+
+
+  /* =========================
+     RETOUR
+  ========================= */
+
+  function goBack() {
+
+    window.location.href =
+      "moi.html";
+
+  }
+
+
+  /* =========================
+     AFFICHER / MASQUER
+  ========================= */
+
+  function togglePassword(
+    inputId,
+    button
+  ) {
+
+    const input =
+      document.getElementById(
+        inputId
+      );
+
+    if (input.type === "password") {
+
+      input.type = "text";
+      button.textContent = "Masquer";
+
+    } else {
+
+      input.type = "password";
+      button.textContent = "Afficher";
+
+    }
+
+  }
+
+
+  /* =========================
+     CONDITIONS
+  ========================= */
+
+  function checkRequirements() {
+
+    const password =
+      document.getElementById(
+        "newPassword"
+      ).value;
+
+    const confirmation =
+      document.getElementById(
+        "confirmPassword"
+      ).value;
+
+
+    const lengthRequirement =
+      document.getElementById(
+        "lengthRequirement"
+      );
+
+    const matchRequirement =
+      document.getElementById(
+        "matchRequirement"
+      );
+
+
+    if (password.length >= 6) {
+
+      lengthRequirement.classList.add(
+        "valid"
+      );
+
+    } else {
+
+      lengthRequirement.classList.remove(
+        "valid"
+      );
+
+    }
+
+
+    if (
+      password.length > 0 &&
+      password === confirmation
+    ) {
+
+      matchRequirement.classList.add(
+        "valid"
+      );
+
+    } else {
+
+      matchRequirement.classList.remove(
+        "valid"
+      );
+
+    }
+
+  }
+
+
+  /* =========================
+     MESSAGE
+  ========================= */
+
+  function showMessage(
+    text,
+    type
+  ) {
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+    message.textContent = text;
+
+    message.className =
+      "message show " + type;
+
+  }
+
+
+  function hideMessage() {
+
+    const message =
+      document.getElementById(
+        "message"
+      );
+
+    message.textContent = "";
+
+    message.className =
+      "message";
+
+  }
+
+
+  /* =========================
+     MODIFICATION
+  ========================= */
+
+  async function changePassword() {
+
+    hideMessage();
+
+
+    const currentPassword =
+      document.getElementById(
+        "currentPassword"
+      ).value;
+
+    const newPassword =
+      document.getElementById(
+        "newPassword"
+      ).value;
+
+    const confirmPassword =
+      document.getElementById(
+        "confirmPassword"
+      ).value;
+
+
+    /* Vérification locale */
+
+    if (!currentPassword) {
+
+      showMessage(
+        "Veuillez saisir votre mot de passe actuel.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (newPassword.length < 6) {
+
+      showMessage(
+        "Le nouveau mot de passe doit contenir au moins 6 caractères.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (newPassword === currentPassword) {
+
+      showMessage(
+        "Le nouveau mot de passe doit être différent de l'ancien.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (newPassword !== confirmPassword) {
+
+      showMessage(
+        "Les deux nouveaux mots de passe ne correspondent pas.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    const button =
+      document.getElementById(
+        "saveButton"
+      );
+
+    button.disabled = true;
+
+    button.textContent =
+      "Modification...";
+
+
+    try {
+
+      const response =
+        await fetch(
+          CHANGE_PASSWORD_FUNCTION,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+
+              token: token,
+
+              current_password:
+                currentPassword,
+
+              new_password:
+                newPassword
+
+            })
+          }
+        );
+
+
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+
+        sessionStorage.removeItem(
+          "phome_session_token"
+        );
+
+        window.location.href =
+          "login.html";
+
+        return;
+      }
+
+
+      let data;
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch (e) {
+
+        throw new Error(
+          "Réponse invalide du serveur."
+        );
+
+      }
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          data.error ||
+          "Impossible de modifier le mot de passe."
+        );
+
+      }
+
+
+      showMessage(
+        data.message ||
+        "Votre mot de passe a été modifié avec succès.",
+        "success"
+      );
+
+
+      /*
+       * On vide immédiatement
+       * les informations sensibles.
+       */
+
+      document.getElementById(
+        "currentPassword"
+      ).value = "";
+
+      document.getElementById(
+        "newPassword"
+      ).value = "";
+
+      document.getElementById(
+        "confirmPassword"
+      ).value = "";
+
+      checkRequirements();
+
+
+    } catch (error) {
+
+      console.error(
+        "Erreur modification mot de passe :",
+        error
+      );
+
+      showMessage(
+        error.message ||
+        "Une erreur est survenue.",
+        "error"
+      );
+
+    } finally {
+
+      button.disabled = false;
+
+      button.textContent =
+        "Modifier le mot de passe";
+
+    }
+
+  }
+
+</script>
+
+</body>
+      </html>
