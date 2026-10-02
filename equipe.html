@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Équipe | P HOME</title>
+<style>
+:root{
+  --bg:#0d1117;
+  --surface:#151b23;
+  --surface-2:#10151c;
+  --border:#2a323d;
+  --border-strong:#3d4856;
+  --text:#f0f3f6;
+  --muted:#8b95a3;
+  --accent:#3b8cff;
+  --accent-soft:rgba(59,140,255,.16);
+  --ok:#3ddc84;
+  --ok-bg:rgba(61,220,132,.12);
+  --danger-bg:rgba(255,107,107,.1);
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
+}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{max-width:560px;margin:0 auto;padding:0 18px}
+
+/* En-tête */
+.top{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:max(18px,env(safe-area-inset-top)) 0 14px;
+}
+.top h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.top img{height:34px;width:auto;max-width:120px;object-fit:contain}
+
+/* Résumé */
+.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{
+  min-width:0;padding:16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);
+}
+.stat-label{font-size:13px;color:var(--muted)}
+.stat-value{
+  margin-top:6px;font-size:26px;font-weight:700;line-height:1.15;letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums;overflow-wrap:anywhere;
+}
+.stat-value small{margin-left:4px;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0}
+
+/* Statut */
+.status{
+  display:none;margin:14px 0 0;padding:12px 14px;border-radius:12px;font-size:14px;
+  background:var(--surface-2);border:1px solid var(--border);color:var(--muted);
+}
+.status.show{display:block}
+.status.error{background:var(--danger-bg);border-color:rgba(255,107,107,.35);color:#ffc9c9}
+
+/* Cartes */
+.card{
+  margin-top:14px;padding:18px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);
+}
+.card-title{margin:0 0 4px;font-size:16px;font-weight:700}
+.card-sub{margin:0 0 16px;font-size:13px;color:var(--muted)}
+.section-title{margin:28px 0 12px;font-size:17px;font-weight:700}
+
+/* Invitation */
+.field-label{margin:0 0 7px;font-size:12px;font-weight:600;color:var(--muted)}
+.field-row{
+  display:flex;align-items:center;gap:10px;min-height:50px;padding:7px 8px 7px 14px;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:12px;
+}
+.field-row + .field-label{margin-top:16px}
+.code-value{
+  flex:1;min-width:0;font-size:18px;font-weight:700;letter-spacing:.06em;
+  font-variant-numeric:tabular-nums;overflow-wrap:anywhere;
+}
+.link-value{
+  flex:1;min-width:0;font-size:13px;color:var(--muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.copy-btn{
+  flex-shrink:0;height:36px;padding:0 14px;border:1px solid var(--border-strong);
+  border-radius:9px;background:#222b37;font-size:13px;font-weight:600;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.copy-btn:hover:not(:disabled){background:#2a3441}
+.copy-btn:disabled{opacity:.5;cursor:not-allowed}
+.copy-btn.success{color:var(--ok);border-color:rgba(61,220,132,.35);background:var(--ok-bg)}
+
+.share-btn{
+  display:none;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;margin-top:18px;
+  border:0;border-radius:12px;background:#fff;color:#0d1117;font-size:15px;font-weight:700;
+  transition:background .15s,transform .05s;
+}
+.share-btn.available{display:flex}
+.share-btn:hover:not(:disabled){background:#e4e8ee}
+.share-btn:active:not(:disabled){transform:translateY(1px)}
+.share-btn:disabled{opacity:.5;cursor:not-allowed}
+.share-btn svg{width:18px;height:18px}
+
+/* Tableau des niveaux */
+.table-card{overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{
+  height:44px;padding:0 14px;background:var(--surface-2);color:var(--muted);
+  font-size:12px;font-weight:600;text-align:right;
+}
+td{height:62px;padding:0 14px;border-top:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left;width:22%}
+th:nth-child(2),td:nth-child(2){width:20%}
+th:nth-child(3),td:nth-child(3){width:23%}
+.level{
+  display:inline-grid;place-items:center;min-width:40px;height:28px;padding:0 8px;
+  border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:700;
+}
+.rate{font-size:14px;font-weight:600;color:var(--accent)}
+.people{font-size:14px;font-weight:600}
+.reward{font-size:14px;font-weight:700;overflow-wrap:anywhere}
+.reward small{margin-left:3px;font-size:11px;font-weight:600;color:var(--muted)}
+
+/* Explication */
+.info-title{margin:0 0 8px;font-size:15px;font-weight:700}
+.info-text{margin:0;font-size:13px;line-height:1.65;color:var(--muted)}
+
+/* Navigation */
+.bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:10;
+  background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bottom-nav .inner{max-width:560px;margin:0 auto;height:64px;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  font-size:12px;font-weight:500;color:var(--muted);
+}
+.nav-item svg{width:22px;height:22px}
+.nav-item:hover{color:var(--text)}
+.nav-item.active{color:var(--accent)}
+
+@media (max-width:390px){
+  .shell{padding:0 12px}
+  .stat-value{font-size:22px}
+  th,td{padding:0 10px}
+  th{font-size:11px}
+  .people,.reward{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+  <header class="top">
+    <h1>Équipe</h1>
+    <img src="logoreg.png" alt="P HOME">
+  </header>
+
+  <!-- 1. Résumé -->
+  <section class="summary" aria-label="Résumé de l'équipe">
+    <div class="stat">
+      <div class="stat-label">Personnes parrainées</div>
+      <div class="stat-value" id="totalPeople">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Commissions gagnées</div>
+      <div class="stat-value"><span id="totalCommission">—</span><small>FCFA</small></div>
+    </div>
+  </section>
+
+  <div id="pageStatus" class="status" role="status" aria-live="polite"></div>
+
+  <!-- 2. Invitation -->
+  <section class="card" aria-labelledby="inviteTitle">
+    <h2 class="card-title" id="inviteTitle">Invitez vos amis</h2>
+    <p class="card-sub">Partagez votre code ou votre lien personnel.</p>
+
+    <div class="field-label">Code de parrainage</div>
+    <div class="field-row">
+      <div class="code-value" id="referralCode">—</div>
+      <button class="copy-btn" id="copyCode" type="button" disabled>Copier</button>
+    </div>
+
+    <div class="field-label">Lien d'invitation</div>
+    <div class="field-row">
+      <div class="link-value" id="invitationLink">Chargement…</div>
+      <button class="copy-btn" id="copyLink" type="button" disabled>Copier</button>
+    </div>
+
+    <button class="share-btn" id="shareBtn" type="button" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      Partager mon lien
+    </button>
+  </section>
+
+  <!-- 3. Niveaux -->
+  <section aria-labelledby="levelsTitle">
+    <h2 class="section-title" id="levelsTitle">Détails de l'équipe</h2>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Niveau</th>
+            <th scope="col">Taux</th>
+            <th scope="col">Membres</th>
+            <th scope="col">Commission</th>
+          </tr>
+        </thead>
+        <tbody id="levelsBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4. Explication -->
+  <section class="card" aria-labelledby="infoTitle">
+    <h2 class="info-title" id="infoTitle">Comment fonctionne votre équipe ?</h2>
+    <p class="info-text">
+      Invitez de nouveaux membres avec votre lien personnel.
+      Les commissions sont calculées automatiquement selon le
+      niveau de chaque membre de votre équipe et les règles
+      définies sur P HOME. Les montants affichés correspondent
+      aux commissions enregistrées sur votre compte.
+    </p>
+  </section>
+
+</div>
+
+<nav class="bottom-nav" aria-label="Navigation principale">
+  <div class="inner">
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>
+      <span>Accueil</span>
+    </a>
+    <a class="nav-item" href="produit.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v8"/></svg>
+      <span>Produit</span>
+    </a>
+    <a class="nav-item active" href="equipe.html" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c2.1.7 3.5 2.4 3.5 5"/></svg>
+      <span>Équipe</span>
+    </a>
+    <a class="nav-item" href="moi.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>Moi</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+"use strict";
+
+/* ---------------- Configuration ---------------- */
+
+const API_BASE = "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1";
+const TEAM_ENDPOINT = API_BASE + "/p-home-team";
+const LEVEL_COUNT = 3;
+
+const token = sessionStorage.getItem("phome_session_token");
+
+/* ---------------- Outils ---------------- */
+
+const $ = id => document.getElementById(id);
+
+function money(value) {
+  const n = Number(value || 0);
+  return Number.isFinite(n) ? Math.round(n).toLocaleString("fr-FR") : "0";
+}
+
+function setStatus(message, type = "") {
+  const el = $("pageStatus");
+  el.textContent = message || "";
+  el.className = "status" + (message ? " show" : "") + (type ? " " + type : "");
+}
+
+function cell(className, text, unit) {
+  const td = document.createElement("td");
+  td.className = className;
+  td.textContent = text;
+  if (unit) {
+    const small = document.createElement("small");
+    small.textContent = unit;
+    td.appendChild(small);
+  }
+  return td;
+}
+
+/* ---------------- Tableau des niveaux ---------------- */
+
+function renderLevels(levels) {
+  const body = $("levelsBody");
+  body.replaceChildren();
+
+  for (let level = 1; level <= LEVEL_COUNT; level++) {
+    const row = levels ? levels.find(item => Number(item.level) === level) : null;
+    const tr = document.createElement("tr");
+
+    const levelCell = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = "level";
+    badge.textContent = "LV" + level;
+    levelCell.appendChild(badge);
+
+    tr.appendChild(levelCell);
+
+    if (levels) {
+      tr.appendChild(cell("rate", money(row ? row.percentage : 0) + " %"));
+      tr.appendChild(cell("people", money(row ? row.people : 0)));
+      tr.appendChild(cell("reward", money(row ? row.reward : 0) + " ", "FCFA"));
+    } else {
+      tr.appendChild(cell("rate", "—"));
+      tr.appendChild(cell("people", "—"));
+      tr.appendChild(cell("reward", "—"));
+    }
+
+    body.appendChild(tr);
+  }
+}
+
+/* ---------------- Copie et partage ---------------- */
+
+async function copyText(text, button) {
+  if (!text) return;
+
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (error) {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand("copy");
+    area.remove();
+  }
+
+  const oldText = button.textContent;
+  button.textContent = "Copié";
+  button.classList.add("success");
+
+  setTimeout(() => {
+    button.textContent = oldText;
+    button.classList.remove("success");
+  }, 1500);
+}
+
+let currentCode = "";
+let currentLink = "";
+
+$("copyCode").addEventListener("click", () => copyText(currentCode, $("copyCode")));
+$("copyLink").addEventListener("click", () => copyText(currentLink, $("copyLink")));
+
+if (navigator.share) {
+  $("shareBtn").classList.add("available");
+  $("shareBtn").addEventListener("click", async () => {
+    if (!currentLink) return;
+    try {
+      await navigator.share({
+        title: "P HOME",
+        text: "Rejoignez-moi sur P HOME.",
+        url: currentLink
+      });
+    } catch (error) {
+      /* partage annulé par l'utilisateur : rien à faire */
+    }
+  });
+}
+
+/* ---------------- Chargement ---------------- */
+
+async function loadTeam() {
+  if (!token) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  setStatus("Chargement de votre équipe…");
+
+  try {
+    const response = await fetch(TEAM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (response.status === 401) {
+      sessionStorage.removeItem("phome_session_token");
+      sessionStorage.removeItem("phome_user_id");
+      window.location.href = "login.html";
+      return;
+    }
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "Impossible de charger votre équipe.");
+    }
+
+    /* Code et lien */
+    currentCode = data.referral_code || "";
+    currentLink = data.invitation_link ||
+      (currentCode ? "https://pumahome.vercel.app/?ref=" + encodeURIComponent(currentCode) : "");
+
+    $("referralCode").textContent = currentCode || "—";
+    $("invitationLink").textContent = currentLink || "—";
+    $("invitationLink").title = currentLink;
+
+    $("copyCode").disabled = !currentCode;
+    $("copyLink").disabled = !currentLink;
+    $("shareBtn").disabled = !currentLink;
+
+    /* Résumé */
+    $("totalPeople").textContent = money(data.total_people);
+    $("totalCommission").textContent = money(data.total_commission);
+
+    /* Niveaux */
+    renderLevels(Array.isArray(data.levels) ? data.levels : []);
+
+    setStatus("");
+
+  } catch (error) {
+    console.error(error);
+    $("invitationLink").textContent = "—";
+    setStatus(error.message || "Erreur de connexion.", "error");
+  }
+}
+
+/* ---------------- Démarrage ---------------- */
+
+renderLevels(null);
+loadTeam();
+</script>
+</body>
+  </html>
+  
