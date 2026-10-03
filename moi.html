@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Moi | P HOME</title>
+<style>
+:root{
+  --bg:#0d1117;
+  --surface:#151b23;
+  --surface-2:#10151c;
+  --border:#2a323d;
+  --border-strong:#3d4856;
+  --text:#f0f3f6;
+  --muted:#8b95a3;
+  --accent:#3b8cff;
+  --accent-soft:rgba(59,140,255,.16);
+  --ok:#3ddc84;
+  --ok-bg:rgba(61,220,132,.12);
+  --danger:#ff6b6b;
+  --danger-bg:rgba(255,107,107,.1);
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
+}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{max-width:560px;margin:0 auto;padding:0 18px}
+
+/* En-tête profil */
+.top{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:max(18px,env(safe-area-inset-top)) 0 18px;
+}
+.user{display:flex;align-items:center;gap:12px;min-width:0}
+.avatar{
+  display:grid;place-items:center;flex-shrink:0;width:48px;height:48px;border-radius:50%;
+  background:var(--accent-soft);color:var(--accent);
+}
+.avatar svg{width:24px;height:24px}
+.user-info{min-width:0}
+.phone{
+  font-size:17px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.level{display:flex;align-items:center;gap:8px;margin-top:2px;font-size:13px;color:var(--muted)}
+.badge{
+  padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;
+  color:var(--ok);background:var(--ok-bg);border:1px solid rgba(61,220,132,.22);
+}
+.top img{height:34px;width:auto;max-width:96px;object-fit:contain;flex-shrink:0}
+
+/* Statut */
+.status{
+  display:none;align-items:center;justify-content:space-between;gap:12px;
+  margin:0 0 14px;padding:12px 14px;border-radius:12px;font-size:14px;
+  background:var(--danger-bg);border:1px solid rgba(255,107,107,.35);color:#ffc9c9;
+}
+.status.show{display:flex}
+.status button{
+  flex-shrink:0;height:32px;padding:0 12px;border:1px solid rgba(255,107,107,.45);
+  border-radius:8px;background:transparent;font-size:13px;font-weight:600;color:#ffc9c9;
+}
+
+/* Solde */
+.balance-card{
+  padding:20px;border-radius:20px;border:1px solid var(--border);
+  background:
+    radial-gradient(120% 90% at 100% 0%,rgba(59,140,255,.14),transparent 60%),
+    var(--surface);
+}
+.balance-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.balance-item{min-width:0}
+.balance-item + .balance-item{padding-left:16px;border-left:1px solid var(--border)}
+.balance-label{font-size:13px;color:var(--muted)}
+.balance-value{
+  margin-top:6px;font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.2;
+  font-variant-numeric:tabular-nums;overflow-wrap:anywhere;
+}
+.balance-value small{margin-left:3px;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0}
+
+.quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:18px}
+.quick a{
+  display:flex;align-items:center;justify-content:center;gap:7px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,.06);border:1px solid var(--border);font-size:14px;font-weight:600;
+  transition:background .15s,transform .05s;
+}
+.quick a:hover{background:rgba(255,255,255,.1)}
+.quick a:active{transform:translateY(1px)}
+.quick a.primary{background:#fff;border-color:#fff;color:#0d1117}
+.quick a.primary:hover{background:#e4e8ee}
+.quick svg{width:17px;height:17px}
+
+/* Menus */
+.group-title{margin:26px 0 10px 4px;font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.list{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.row{
+  display:flex;align-items:center;gap:14px;min-height:60px;padding:0 14px;
+  border-top:1px solid var(--border);transition:background .15s;
+}
+.row:first-child{border-top:0}
+.row:hover{background:#19202a}
+.row:active{background:#1d2530}
+.row .icon{
+  display:grid;place-items:center;flex-shrink:0;width:38px;height:38px;border-radius:11px;
+  background:var(--accent-soft);color:var(--accent);
+}
+.row .icon svg{width:19px;height:19px}
+.row .label{flex:1;min-width:0;font-size:15px;font-weight:500}
+.row .chev{width:18px;height:18px;flex-shrink:0;color:#566070}
+
+.logout{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:50px;margin-top:26px;
+  border:1px solid rgba(255,107,107,.35);border-radius:12px;background:var(--danger-bg);
+  color:#ff9d9d;font-size:15px;font-weight:600;transition:background .15s;
+}
+.logout:hover{background:rgba(255,107,107,.16)}
+.logout svg{width:18px;height:18px}
+
+/* Chargement */
+.loading{
+  position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:rgba(13,17,23,.85);backdrop-filter:blur(3px);
+}
+.loading.hidden{display:none}
+.loader{
+  display:flex;align-items:center;gap:12px;padding:16px 22px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--border);font-size:14px;color:var(--muted);
+}
+.spinner{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--border-strong);border-top-color:var(--accent);animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Navigation */
+.bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bottom-nav .inner{max-width:560px;margin:0 auto;height:64px;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  font-size:12px;font-weight:500;color:var(--muted);
+}
+.nav-item svg{width:22px;height:22px}
+.nav-item:hover{color:var(--text)}
+.nav-item.active{color:var(--accent)}
+
+@media (max-width:360px){
+  .shell{padding:0 12px}
+  .balance-value{font-size:20px}
+  .quick a{font-size:13px;gap:5px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.spinner{animation-duration:2s}}
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading" role="status" aria-live="polite">
+  <div class="loader"><span class="spinner"></span>Chargement…</div>
+</div>
+
+<main class="shell">
+
+  <!-- Profil -->
+  <header class="top">
+    <div class="user">
+      <div class="avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <div class="user-info">
+        <div class="phone" id="userPhone">—</div>
+        <div class="level">Niveau <span class="badge" id="userLevel">—</span></div>
+      </div>
+    </div>
+    <img src="logoreg.png" alt="P HOME">
+  </header>
+
+  <div class="status" id="status" role="alert">
+    <span id="statusText">Impossible de charger le profil.</span>
+    <button type="button" id="retryBtn">Réessayer</button>
+  </div>
+
+  <!-- Solde -->
+  <section class="balance-card" aria-label="Solde">
+    <div class="balance-grid">
+      <div class="balance-item">
+        <div class="balance-label">Solde</div>
+        <div class="balance-value"><span id="balance">0</span><small>FCFA</small></div>
+      </div>
+      <div class="balance-item">
+        <div class="balance-label">Revenus cumulés</div>
+        <div class="balance-value"><span id="totalCumule">0</span><small>FCFA</small></div>
+      </div>
+    </div>
+
+    <div class="quick">
+      <a href="recharge.html" class="primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Recharge
+      </a>
+      <a href="retrait.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+        Retrait
+      </a>
+      <a href="historique.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Historique
+      </a>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <h2 class="group-title">Services</h2>
+  <nav class="list" aria-label="Services">
+    <a href="a-propos.html" class="row">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/></svg></span>
+      <span class="label">À propos</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a href="service-client.html" class="row">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0M4 13v4a2 2 0 0 0 2 2h2v-6H4zM20 13v4a2 2 0 0 1-2 2h-2v-6h4zM16 19h-4"/></svg></span>
+      <span class="label">Service client</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a href="evenements.html" class="row">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v18M6 5h11l-2 4 2 4H6"/></svg></span>
+      <span class="label">Événements</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a href="regle.html" class="row">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12M6 8h12M6 12h8M6 16h12M6 20h8"/></svg></span>
+      <span class="label">Règles</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </nav>
+
+  <!-- Compte -->
+  <h2 class="group-title">Compte</h2>
+  <nav class="list" aria-label="Compte">
+    <a href="retrait-compte.html" class="row">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span>
+      <span class="label">Lier le compte de retrait</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a href="modifier-mot-de-passe.html" class="row">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg></span>
+      <span class="label">Modifier le mot de passe</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a href="cadeau.html" class="row">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8M3 8h18v4H3zM12 8v13M12 8H8.5A2.5 2.5 0 1 1 11 5.5L12 8zM12 8h3.5A2.5 2.5 0 1 0 13 5.5L12 8z"/></svg></span>
+      <span class="label">Échanger un cadeau</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a href="telecharger.html" class="row">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span>
+      <span class="label">Télécharger l'application</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </nav>
+
+  <button class="logout" id="logoutBtn" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-5M14 21h5a2 2 0 0 0 2-2"/></svg>
+    Se déconnecter
+  </button>
+
+</main>
+
+<nav class="bottom-nav" aria-label="Navigation principale">
+  <div class="inner">
+    <a class="nav-item" href="dashboard.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>
+      <span>Accueil</span>
+    </a>
+    <a class="nav-item" href="produit.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v8"/></svg>
+      <span>Produit</span>
+    </a>
+    <a class="nav-item" href="equipe.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c2.1.7 3.5 2.4 3.5 5"/></svg>
+      <span>Équipe</span>
+    </a>
+    <a class="nav-item active" href="moi.html" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span>Moi</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+"use strict";
+
+const API_BASE = "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1";
+const PROFILE_ENDPOINT = API_BASE + "/p-home-profile";
+
+const token = sessionStorage.getItem("phome_session_token");
+
+const $ = id => document.getElementById(id);
+
+function formatMoney(value) {
+  return Number(value || 0).toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+}
+
+function setError(message) {
+  $("statusText").textContent = message || "";
+  $("status").classList.toggle("show", Boolean(message));
+}
+
+/* ---------------- Session ---------------- */
+
+if (!token) {
+  window.location.replace("login.html");
+}
+
+/* ---------------- Chargement du profil ---------------- */
+
+async function loadProfile() {
+  $("loading").classList.remove("hidden");
+  setError("");
+
+  try {
+    const response = await fetch(PROFILE_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (response.status === 401) {
+      sessionStorage.removeItem("phome_session_token");
+      sessionStorage.removeItem("phome_user_id");
+      window.location.replace("login.html");
+      return;
+    }
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Impossible de charger le profil.");
+    }
+
+    $("userPhone").textContent = data.user?.phone || "—";
+
+    const level = Number(data.user?.level || 0);
+    $("userLevel").textContent = level > 0 ? "LV" + level : "Aucun";
+
+    $("balance").textContent = formatMoney(data.balance);
+    $("totalCumule").textContent = formatMoney(data.total_cumule);
+
+  } catch (error) {
+    console.error(error);
+    setError(error.message || "Impossible de charger le profil.");
+  } finally {
+    $("loading").classList.add("hidden");
+  }
+}
+
+/* ---------------- Actions ---------------- */
+
+$("retryBtn").addEventListener("click", loadProfile);
+
+$("logoutBtn").addEventListener("click", () => {
+  sessionStorage.removeItem("phome_session_token");
+  sessionStorage.removeItem("phome_user_id");
+  window.location.replace("login.html");
+});
+
+/* ---------------- Démarrage ---------------- */
+
+if (token) {
+  loadProfile();
+}
+</script>
+</body>
+</html>                                                                                                                                                       </html>
+                                                                                                                                                        
