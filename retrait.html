@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Retrait | P HOME</title>
+<style>
+:root{
+  --bg:#0d1117;
+  --surface:#151b23;
+  --surface-2:#10151c;
+  --border:#2a323d;
+  --border-strong:#3d4856;
+  --text:#f0f3f6;
+  --muted:#8b95a3;
+  --accent:#3b8cff;
+  --accent-soft:rgba(59,140,255,.16);
+  --ok:#3ddc84;
+  --ok-bg:rgba(61,220,132,.1);
+  --danger:#ff6b6b;
+  --danger-bg:rgba(255,107,107,.1);
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.page{
+  max-width:520px;margin:0 auto;
+  padding:max(18px,env(safe-area-inset-top)) 18px max(32px,env(safe-area-inset-bottom));
+}
+
+/* En-tête */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.top-left{display:flex;align-items:center;gap:12px}
+.back{
+  display:grid;place-items:center;width:40px;height:40px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border);color:var(--muted);
+  transition:color .15s,border-color .15s;
+}
+.back:hover{color:var(--text);border-color:var(--border-strong)}
+.back svg{width:20px;height:20px}
+.top h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em}
+.top img{height:34px;width:auto;max-width:110px;object-fit:contain}
+
+/* Message */
+.message{display:none;margin-bottom:16px;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.5}
+.message.success{display:block;background:var(--ok-bg);border:1px solid rgba(61,220,132,.3);color:#c5f5d8}
+.message.error{display:block;background:var(--danger-bg);border:1px solid rgba(255,107,107,.35);color:#ffc9c9}
+
+/* Solde */
+.balance-card{
+  padding:20px;border-radius:20px;border:1px solid var(--border);
+  background:
+    radial-gradient(120% 90% at 100% 0%,rgba(59,140,255,.14),transparent 60%),
+    var(--surface);
+}
+.balance-label{font-size:14px;color:var(--muted)}
+.balance{
+  margin-top:6px;font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.15;
+  font-variant-numeric:tabular-nums;overflow-wrap:anywhere;
+}
+.balance small{margin-left:4px;font-size:.45em;font-weight:600;color:var(--muted);letter-spacing:0}
+
+/* Compte de retrait */
+.account-link{
+  display:flex;align-items:center;gap:14px;width:100%;min-height:60px;margin-top:12px;padding:0 14px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  text-align:left;transition:border-color .15s,background .15s;
+}
+.account-link:hover{border-color:var(--border-strong);background:#19202a}
+.icon{
+  display:grid;place-items:center;flex-shrink:0;width:38px;height:38px;border-radius:11px;
+  background:var(--accent-soft);color:var(--accent);
+}
+.icon svg{width:19px;height:19px}
+.account-link .label{flex:1;font-size:15px;font-weight:500}
+.chev{width:18px;height:18px;color:#566070}
+
+/* Formulaire */
+.form-card{margin-top:12px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.form-title{margin:0 0 4px;font-size:17px;font-weight:700}
+.form-desc{margin:0 0 20px;font-size:14px;color:var(--muted)}
+.group{margin-bottom:18px}
+label{display:block;margin-bottom:7px;font-size:14px;font-weight:600}
+.field{
+  display:flex;align-items:center;height:52px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:12px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.field:hover{border-color:var(--border-strong)}
+.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(59,140,255,.18)}
+.field.invalid{border-color:var(--danger)}
+.field input{
+  flex:1;min-width:0;height:100%;padding:0 16px;background:transparent;border:0;outline:0;font-size:16px;
+}
+.field input::placeholder{color:#5d6773}
+.field .unit{padding-right:16px;font-size:14px;font-weight:600;color:var(--muted)}
+.toggle{
+  display:grid;place-items:center;width:48px;height:100%;background:transparent;border:0;color:var(--muted);
+  border-radius:0 12px 12px 0;
+}
+.toggle:hover{color:var(--text)}
+.toggle svg{width:20px;height:20px}
+.hint{margin:7px 0 0;font-size:13px;color:var(--muted)}
+.hint.error{color:#ff9d9d}
+
+/* Calcul */
+.calc{margin:2px 0 18px;padding:6px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px}
+.calc-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:14px}
+.calc-row span:first-child{color:var(--muted)}
+.calc-row span:last-child{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.calc-total{border-top:1px solid var(--border);margin-top:2px;padding-top:12px;font-size:15px}
+.calc-total span:last-child{color:var(--ok);font-size:17px;font-weight:700}
+
+.submit{
+  width:100%;height:52px;border:0;border-radius:var(--radius);background:#fff;color:#0d1117;
+  font-size:16px;font-weight:700;transition:background .15s,transform .05s;
+}
+.submit:hover:not(:disabled){background:#e4e8ee}
+.submit:active:not(:disabled){transform:translateY(1px)}
+.submit:disabled{opacity:.6;cursor:progress}
+
+/* Conditions */
+.info{margin-top:12px;padding:6px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+.info-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
+.info-row:last-child{border-bottom:0}
+.info-row span:first-child{color:var(--muted)}
+.info-row span:last-child{font-weight:600;text-align:right}
+.info-note{margin:12px 4px 0;font-size:13px;color:var(--muted);text-align:center}
+
+/* Fenêtres */
+.backdrop{
+  position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(5,8,12,.74);backdrop-filter:blur(3px);
+}
+.backdrop.show{display:flex}
+.modal{
+  width:100%;max-width:390px;padding:22px;background:var(--surface);
+  border:1px solid var(--border);border-radius:20px;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);animation:pop .22s ease-out;
+}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.modal-head h2{margin:0;font-size:18px;font-weight:700}
+.close{
+  display:grid;place-items:center;width:36px;height:36px;background:transparent;border:0;border-radius:50%;color:var(--muted);
+}
+.close:hover{background:rgba(255,255,255,.06);color:var(--text)}
+.close svg{width:18px;height:18px}
+.modal-text{margin:0 0 16px;font-size:14px;color:var(--muted)}
+.rows{margin:0 0 4px}
+.rows .info-row{padding:12px 0}
+
+.btn{
+  display:block;width:100%;height:48px;line-height:48px;border:0;border-radius:12px;
+  font-size:15px;font-weight:700;text-align:center;
+}
+.btn.primary{background:#fff;color:#0d1117}
+.btn.primary:hover{background:#e4e8ee}
+.btn.ghost{margin-top:8px;background:transparent;color:var(--muted);font-weight:600}
+.btn.ghost:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.confirm-actions{margin-top:18px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.modal{animation:none}}
+</style>
+</head>
+
+<body>
+<main class="page">
+
+  <header class="top">
+    <div class="top-left">
+      <button class="back" type="button" id="backBtn" aria-label="Retour">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <h1>Retrait</h1>
+    </div>
+    <img src="logoreg.png" alt="P HOME">
+  </header>
+
+  <div id="message" class="message" role="status" aria-live="polite"></div>
+
+  <!-- Solde -->
+  <section class="balance-card" aria-label="Solde disponible">
+    <div class="balance-label">Solde disponible</div>
+    <div class="balance"><span id="balance">…</span><small>FCFA</small></div>
+  </section>
+
+  <!-- Compte de retrait -->
+  <button class="account-link" type="button" id="openAccountBtn">
+    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span>
+    <span class="label">Voir mon compte de retrait</span>
+    <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+
+  <!-- Formulaire -->
+  <section class="form-card">
+    <h2 class="form-title">Demander un retrait</h2>
+    <p class="form-desc">Saisissez le montant que vous souhaitez retirer. Les frais sont calculés automatiquement.</p>
+
+    <div class="group">
+      <label for="amount">Montant du retrait</label>
+      <div class="field" id="amountField">
+        <input type="text" id="amount" inputmode="numeric" autocomplete="off" maxlength="9" placeholder="Exemple : 2 000">
+        <span class="unit">FCFA</span>
+      </div>
+      <p class="hint" id="amountHint"></p>
+    </div>
+
+    <div class="calc" aria-live="polite">
+      <div class="calc-row"><span>Montant demandé</span><span id="requested">0 FCFA</span></div>
+      <div class="calc-row"><span>Frais</span><span id="fee">0 FCFA</span></div>
+      <div class="calc-row calc-total"><span>Montant reçu</span><span id="received">0 FCFA</span></div>
+    </div>
+
+    <div class="group">
+      <label for="transactionPassword">Mot de passe de transaction</label>
+      <div class="field">
+        <input type="password" id="transactionPassword" placeholder="Votre mot de passe de transaction" autocomplete="off">
+        <button class="toggle" type="button" id="showButton" aria-label="Afficher le mot de passe"></button>
+      </div>
+    </div>
+
+    <button class="submit" id="submitButton" type="button">Demander le retrait</button>
+  </section>
+
+  <!-- Conditions -->
+  <section class="info" aria-label="Conditions de retrait">
+    <div class="info-row"><span>Montant minimum</span><span id="infoMin">—</span></div>
+    <div class="info-row"><span>Frais</span><span id="infoFee">—</span></div>
+    <div class="info-row"><span>Horaires</span><span>08h00 – 18h00</span></div>
+  </section>
+  <p class="info-note">Votre demande reste soumise à validation.</p>
+
+</main>
+
+<!-- Compte de retrait -->
+<div class="backdrop" id="accountModal" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="accountTitle">Compte de retrait</h2>
+      <button class="close" type="button" id="closeAccountBtn" aria-label="Fermer">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg>
+      </button>
+    </div>
+
+    <p id="accountLoading" class="modal-text">Chargement…</p>
+
+    <div id="accountContent" class="rows" style="display:none">
+      <div class="info-row"><span>Opérateur</span><span id="operator">—</span></div>
+      <div class="info-row"><span>Numéro</span><span id="phone">—</span></div>
+      <div class="info-row"><span>Bénéficiaire</span><span id="beneficiary">—</span></div>
+    </div>
+
+    <div id="noAccount" style="display:none">
+      <p class="modal-text">Aucun compte de retrait n'est configuré.</p>
+      <a href="retrait-compte.html" class="btn primary">Configurer mon compte</a>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation -->
+<div class="backdrop" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+  <div class="modal">
+    <div class="modal-head"><h2 id="confirmTitle">Confirmer le retrait</h2></div>
+    <div class="rows">
+      <div class="info-row"><span>Montant demandé</span><span id="confirmAmount">—</span></div>
+      <div class="info-row"><span>Frais</span><span id="confirmFee">—</span></div>
+      <div class="info-row"><span>Montant reçu</span><span id="confirmReceived">—</span></div>
+    </div>
+    <div class="confirm-actions">
+      <button class="btn primary" type="button" id="confirmOk">Confirmer le retrait</button>
+      <button class="btn ghost" type="button" id="confirmCancel">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const SUPABASE_URL = "https://rdnrmufucbhsvgpnqodh.supabase.co";
+
+const PROFILE_API = SUPABASE_URL + "/functions/v1/p-home-profile";
+const ACCOUNT_API = SUPABASE_URL + "/functions/v1/p-home-withdrawal-account";
+const WITHDRAWAL_API = SUPABASE_URL + "/functions/v1/p-home-withdrawal";
+
+const MINIMUM = 1700;
+const FEE_PERCENT = 20;
+
+let currentBalance = 0;
+
+const $ = id => document.getElementById(id);
+
+const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.7 10.7 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.2M6.6 6.6A17 17 0 0 0 2 12s3.6 7 10 7a10 10 0 0 0 4.4-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+
+/* ---------------- Session ---------------- */
+
+function getToken() {
+  const token = sessionStorage.getItem("phome_session_token");
+  return token && token.trim() ? token.trim() : null;
+}
+
+/* ---------------- Formatage ---------------- */
+
+function formatNumber(value) {
+  return Number(value || 0).toLocaleString("fr-FR");
+}
+
+function formatMoney(value) {
+  return formatNumber(value) + " FCFA";
+}
+
+/* ---------------- Message ---------------- */
+
+function showMessage(text, type) {
+  $("message").className = "message " + type;
+  $("message").textContent = text;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function clearMessage() {
+  $("message").className = "message";
+  $("message").textContent = "";
+}
+
+/* ---------------- Fenêtres ---------------- */
+
+let lastFocus = null;
+
+function openModal(id, focusId) {
+  lastFocus = document.activeElement;
+  $(id).classList.add("show");
+  if (focusId) $(focusId).focus();
+}
+
+function closeModal(id) {
+  $(id).classList.remove("show");
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key !== "Escape") return;
+  if ($("confirmModal").classList.contains("show")) resolveConfirm(false);
+  else if ($("accountModal").classList.contains("show")) closeModal("accountModal");
+});
+
+["accountModal", "confirmModal"].forEach(id => {
+  $(id).addEventListener("click", event => {
+    if (event.target !== $(id)) return;
+    if (id === "confirmModal") resolveConfirm(false);
+    else closeModal(id);
+  });
+});
+
+/* ---------------- Calcul ---------------- */
+
+const amountElement = $("amount");
+
+function readAmount() {
+  return Number(amountElement.value || 0);
+}
+
+function calculate() {
+  const amount = readAmount();
+
+  if (!amount || amount <= 0) {
+    $("requested").textContent = "0 FCFA";
+    $("fee").textContent = "0 FCFA";
+    $("received").textContent = "0 FCFA";
+    return;
+  }
+
+  const fee = Math.round(amount * FEE_PERCENT / 100 * 100) / 100;
+  const received = amount - fee;
+
+  $("requested").textContent = formatMoney(amount);
+  $("fee").textContent = formatMoney(fee);
+  $("received").textContent = formatMoney(received);
+}
+
+function updateHint() {
+  const amount = readAmount();
+  const hint = $("amountHint");
+  const field = $("amountField");
+
+  if (amount > 0 && amount < MINIMUM) {
+    hint.textContent = "Le montant minimum est de " + formatMoney(MINIMUM) + ".";
+    hint.className = "hint error";
+    field.classList.add("invalid");
+  } else if (amount > currentBalance && currentBalance > 0) {
+    hint.textContent = "Ce montant dépasse votre solde.";
+    hint.className = "hint error";
+    field.classList.add("invalid");
+  } else {
+    hint.textContent = "Minimum " + formatMoney(MINIMUM) + ".";
+    hint.className = "hint";
+    field.classList.remove("invalid");
+  }
+}
+
+amountElement.addEventListener("input", () => {
+  amountElement.value = amountElement.value.replace(/\D/g, "");
+  calculate();
+  updateHint();
+});
+
+/* ---------------- Solde ---------------- */
+
+async function loadProfile() {
+  const token = getToken();
+
+  if (!token) {
+    $("balance").textContent = "—";
+    showMessage("Session non disponible. Veuillez vous reconnecter.", "error");
+    return;
+  }
+
+  try {
+    const response = await fetch(PROFILE_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    // On ne supprime pas la session sur une simple erreur.
+    if (response.status === 401 || response.status === 403) {
+      $("balance").textContent = "—";
+      showMessage(data.message || "Votre session est expirée. Veuillez vous reconnecter.", "error");
+      return;
+    }
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "Impossible de charger le solde.");
+    }
+
+    // Accepte plusieurs formats possibles du profil.
+    const balanceValue =
+      data.balance ??
+      data.user?.balance ??
+      data.profile?.balance ??
+      0;
+
+    currentBalance = Number(balanceValue || 0);
+    $("balance").textContent = formatNumber(currentBalance);
+    updateHint();
+
+  } catch (error) {
+    $("balance").textContent = "—";
+    showMessage(error.message || "Erreur lors du chargement du solde.", "error");
+  }
+}
+
+/* ---------------- Compte de retrait ---------------- */
+
+async function loadAccount() {
+  $("accountLoading").style.display = "block";
+  $("accountContent").style.display = "none";
+  $("noAccount").style.display = "none";
+
+  const token = getToken();
+
+  if (!token) {
+    $("accountLoading").style.display = "none";
+    $("noAccount").style.display = "block";
+    return;
+  }
+
+  try {
+    const response = await fetch(ACCOUNT_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    $("accountLoading").style.display = "none";
+
+    if (response.status === 401 || response.status === 403) {
+      closeModal("accountModal");
+      showMessage(data.message || "Votre session est expirée.", "error");
+      return;
+    }
+
+    if (!response.ok || !data.success || !data.account || !data.account.beneficiary_number) {
+      $("noAccount").style.display = "block";
+      return;
+    }
+
+    $("accountContent").style.display = "block";
+    $("operator").textContent = data.account.operator || "—";
+    $("phone").textContent = data.account.beneficiary_number || "—";
+    $("beneficiary").textContent = data.account.beneficiary_name || "—";
+
+  } catch (error) {
+    $("accountLoading").style.display = "none";
+    $("noAccount").style.display = "block";
+  }
+}
+
+$("openAccountBtn").addEventListener("click", () => {
+  openModal("accountModal", "closeAccountBtn");
+  loadAccount();
+});
+
+$("closeAccountBtn").addEventListener("click", () => closeModal("accountModal"));
+
+/* ---------------- Mot de passe ---------------- */
+
+$("showButton").innerHTML = EYE;
+$("showButton").addEventListener("click", () => {
+  const input = $("transactionPassword");
+  const show = input.type === "password";
+  input.type = show ? "text" : "password";
+  $("showButton").innerHTML = show ? EYE_OFF : EYE;
+  $("showButton").setAttribute("aria-label", show ? "Masquer le mot de passe" : "Afficher le mot de passe");
+});
+
+/* ---------------- Confirmation ---------------- */
+
+let confirmResolver = null;
+
+function askConfirmation(amount, fee, received) {
+  $("confirmAmount").textContent = formatMoney(amount);
+  $("confirmFee").textContent = formatMoney(fee);
+  $("confirmReceived").textContent = formatMoney(received);
+  openModal("confirmModal", "confirmOk");
+  return new Promise(resolve => { confirmResolver = resolve; });
+}
+
+function resolveConfirm(result) {
+  closeModal("confirmModal");
+  if (confirmResolver) {
+    const resolve = confirmResolver;
+    confirmResolver = null;
+    resolve(result);
+  }
+}
+
+$("confirmOk").addEventListener("click", () => resolveConfirm(true));
+$("confirmCancel").addEventListener("click", () => resolveConfirm(false));
+
+/* ---------------- Retrait ---------------- */
+
+async function submitWithdrawal() {
+  clearMessage();
+
+  const token = getToken();
+
+  if (!token) {
+    showMessage("Votre session n'est pas disponible. Veuillez vous reconnecter.", "error");
+    return;
+  }
+
+  const amount = readAmount();
+  const password = $("transactionPassword").value.trim();
+
+  if (!Number.isInteger(amount) || amount < MINIMUM) {
+    showMessage("Le montant minimum de retrait est de " + formatMoney(MINIMUM) + ".", "error");
+    return;
+  }
+
+  if (amount > currentBalance) {
+    showMessage("Votre solde est insuffisant.", "error");
+    return;
+  }
+
+  if (!password) {
+    showMessage("Veuillez saisir votre mot de passe de transaction.", "error");
+    return;
+  }
+
+  const fee = amount * FEE_PERCENT / 100;
+  const received = amount - fee;
+
+  const confirmed = await askConfirmation(amount, fee, received);
+  if (!confirmed) return;
+
+  $("submitButton").disabled = true;
+  $("submitButton").textContent = "Traitement…";
+
+  try {
+    const response = await fetch(WITHDRAWAL_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: token,
+        amount: amount,
+        transaction_password: password
+      })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (response.status === 401 || response.status === 403) {
+      throw new Error(data.message || "Votre session est expirée.");
+    }
+
+    if (!response.ok || data.success === false) {
+      throw new Error(data.message || "La demande de retrait a échoué.");
+    }
+
+    // Le RPC renvoie normalement balance ; on accepte aussi current_balance ou remaining_balance.
+    currentBalance = Number(
+      data.balance ??
+      data.current_balance ??
+      data.remaining_balance ??
+      (currentBalance - amount)
+    );
+
+    $("balance").textContent = formatNumber(currentBalance);
+
+    amountElement.value = "";
+    $("transactionPassword").value = "";
+    calculate();
+    updateHint();
+
+    const netAmount = data.net_amount ?? data.received_amount ?? received;
+
+    showMessage(
+      "Demande de retrait enregistrée. Montant reçu : " + formatMoney(netAmount) +
+      ". Votre demande est en attente de validation.",
+      "success"
+    );
+
+  } catch (error) {
+    showMessage(error.message || "Impossible d'effectuer le retrait.", "error");
+  } finally {
+    $("submitButton").disabled = false;
+    $("submitButton").textContent = "Demander le retrait";
+  }
+}
+
+$("submitButton").addEventListener("click", submitWithdrawal);
+
+/* ---------------- Navigation ---------------- */
+
+$("backBtn").addEventListener("click", () => {
+  if (history.length > 1) history.back();
+  else window.location.href = "dashboard.html";
+});
+
+/* ---------------- Initialisation ---------------- */
+
+$("infoMin").textContent = formatMoney(MINIMUM);
+$("infoFee").textContent = FEE_PERCENT + " %";
+updateHint();
+loadProfile();
+</script>
+</body>
+</html>
