@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<title>Recharge | P HOME</title>
+<style>
+:root{
+  --bg:#0d1117;
+  --surface:#151b23;
+  --surface-2:#10151c;
+  --border:#2a323d;
+  --border-strong:#3d4856;
+  --text:#f0f3f6;
+  --muted:#8b95a3;
+  --accent:#3b8cff;
+  --accent-soft:rgba(59,140,255,.18);
+  --danger-bg:rgba(255,107,107,.1);
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.page{
+  max-width:520px;margin:0 auto;
+  padding:max(18px,env(safe-area-inset-top)) 18px max(32px,env(safe-area-inset-bottom));
+}
+
+/* En-tête */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.back{
+  display:grid;place-items:center;width:40px;height:40px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border);color:var(--muted);
+  transition:color .15s,border-color .15s;
+}
+.back:hover{color:var(--text);border-color:var(--border-strong)}
+.back svg{width:20px;height:20px}
+.top img{height:34px;width:auto;max-width:110px;object-fit:contain}
+
+h1{margin:0 0 6px;font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.lead{margin:0 0 24px;font-size:15px;color:var(--muted)}
+
+.label{margin:0 0 10px;font-size:14px;font-weight:600}
+
+/* Montants */
+.amounts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.amount{
+  display:flex;align-items:baseline;justify-content:center;gap:6px;height:60px;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;
+  transition:border-color .15s,background .15s,transform .05s;
+}
+.amount small{font-size:12px;font-weight:600;color:var(--muted)}
+.amount:hover{border-color:var(--border-strong);background:#19202a}
+.amount:active{transform:translateY(1px)}
+.amount.selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(59,140,255,.14)}
+.amount.selected small{color:#a9c9ff}
+
+/* Autre montant */
+.field{
+  display:flex;align-items:center;height:56px;margin-bottom:22px;
+  background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);
+  transition:border-color .15s,box-shadow .15s;
+}
+.field:hover{border-color:var(--border-strong)}
+.field:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(59,140,255,.18)}
+.field input{
+  flex:1;min-width:0;height:100%;padding:0 16px;background:transparent;border:0;outline:0;
+  font-size:18px;font-weight:600;font-variant-numeric:tabular-nums;
+}
+.field input::placeholder{color:#5d6773;font-weight:400}
+.field .unit{padding-right:16px;font-size:14px;font-weight:600;color:var(--muted)}
+
+/* Récapitulatif */
+.recap{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:16px;padding:16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);
+}
+.recap span{font-size:14px;color:var(--muted)}
+.recap strong{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;overflow-wrap:anywhere}
+.recap strong small{margin-left:4px;font-size:12px;font-weight:600;color:var(--muted)}
+
+/* Bouton */
+.continue{
+  width:100%;height:54px;border:0;border-radius:var(--radius);
+  background:#fff;color:#0d1117;font-size:16px;font-weight:700;
+  transition:background .15s,transform .05s;
+}
+.continue:hover:not(:disabled){background:#e4e8ee}
+.continue:active:not(:disabled){transform:translateY(1px)}
+.continue:disabled{opacity:.5;cursor:not-allowed}
+
+.note{margin:14px 0 0;font-size:13px;color:var(--muted);text-align:center}
+
+/* Message */
+.message{display:none;margin-top:16px;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.45}
+.message.error{display:block;background:var(--danger-bg);border:1px solid rgba(255,107,107,.35);color:#ffc9c9}
+.message.loading{display:block;background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+
+@media (max-width:360px){
+  .amount{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+
+<body>
+<main class="page">
+
+  <header class="top">
+    <a class="back" href="dashboard.html" aria-label="Retour à l'accueil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+    </a>
+    <img src="logoreg.png" alt="P HOME">
+  </header>
+
+  <h1>Recharger mon compte</h1>
+  <p class="lead">Choisissez un montant ou saisissez celui de votre choix.</p>
+
+  <div class="label" id="amountsLabel">Montants proposés</div>
+  <section class="amounts" role="group" aria-labelledby="amountsLabel">
+    <button class="amount" type="button" data-amount="3000">3 000 <small>FCFA</small></button>
+    <button class="amount" type="button" data-amount="5000">5 000 <small>FCFA</small></button>
+    <button class="amount" type="button" data-amount="7000">7 000 <small>FCFA</small></button>
+    <button class="amount" type="button" data-amount="10000">10 000 <small>FCFA</small></button>
+    <button class="amount" type="button" data-amount="25000">25 000 <small>FCFA</small></button>
+    <button class="amount" type="button" data-amount="50000">50 000 <small>FCFA</small></button>
+  </section>
+
+  <label class="label" for="customAmount" style="display:block">Autre montant</label>
+  <div class="field">
+    <input id="customAmount" type="text" inputmode="numeric" autocomplete="off"
+           placeholder="Saisir un montant" maxlength="9">
+    <span class="unit">FCFA</span>
+  </div>
+
+  <div class="recap" aria-live="polite">
+    <span>Montant à payer</span>
+    <strong id="recapAmount">—</strong>
+  </div>
+
+  <button id="continueBtn" class="continue" type="button" disabled>
+    Continuer vers le paiement
+  </button>
+
+  <p class="note">Vous serez redirigé vers la page de paiement.</p>
+
+  <div id="message" class="message" role="status" aria-live="polite"></div>
+
+</main>
+
+<script>
+"use strict";
+
+const SUPABASE_FUNCTION =
+  "https://rdnrmufucbhsvgpnqodh.supabase.co/functions/v1/p-home-deposit-create";
+
+const sessionToken = sessionStorage.getItem("phome_session_token");
+
+const amountButtons = document.querySelectorAll(".amount");
+const customAmount = document.getElementById("customAmount");
+const continueBtn = document.getElementById("continueBtn");
+const message = document.getElementById("message");
+const recapAmount = document.getElementById("recapAmount");
+
+let selectedAmount = null;
+
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = "message " + type;
+}
+
+function clearMessage() {
+  message.textContent = "";
+  message.className = "message";
+}
+
+function currentAmount() {
+  return selectedAmount || Number(customAmount.value);
+}
+
+/* Met à jour le récapitulatif et l'état du bouton. */
+function updateSummary() {
+  const amount = currentAmount();
+  const valid = Number.isSafeInteger(amount) && amount > 0;
+
+  recapAmount.replaceChildren();
+
+  if (valid) {
+    recapAmount.append(amount.toLocaleString("fr-FR"));
+    const unit = document.createElement("small");
+    unit.textContent = "FCFA";
+    recapAmount.appendChild(unit);
+  } else {
+    recapAmount.textContent = "—";
+  }
+
+  continueBtn.disabled = !valid;
+}
+
+amountButtons.forEach(button => {
+  button.setAttribute("aria-pressed", "false");
+
+  button.addEventListener("click", () => {
+    amountButtons.forEach(btn => {
+      btn.classList.remove("selected");
+      btn.setAttribute("aria-pressed", "false");
+    });
+
+    button.classList.add("selected");
+    button.setAttribute("aria-pressed", "true");
+
+    selectedAmount = Number(button.dataset.amount);
+    customAmount.value = "";
+
+    clearMessage();
+    updateSummary();
+  });
+});
+
+customAmount.addEventListener("input", () => {
+  customAmount.value = customAmount.value.replace(/\D/g, "");
+
+  amountButtons.forEach(btn => {
+    btn.classList.remove("selected");
+    btn.setAttribute("aria-pressed", "false");
+  });
+
+  selectedAmount = null;
+  clearMessage();
+  updateSummary();
+});
+
+continueBtn.addEventListener("click", async () => {
+  clearMessage();
+
+  if (!sessionToken) {
+    showMessage("Votre session a expiré. Veuillez vous reconnecter.", "error");
+    return;
+  }
+
+  const amount = currentAmount();
+
+  if (!Number.isSafeInteger(amount) || amount <= 0) {
+    showMessage("Veuillez sélectionner ou saisir un montant valide.", "error");
+    return;
+  }
+
+  continueBtn.disabled = true;
+  continueBtn.textContent = "Préparation du paiement…";
+  showMessage("Création de votre demande de recharge…", "loading");
+
+  try {
+    const response = await fetch(SUPABASE_FUNCTION, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: sessionToken,
+        amount: amount
+      })
+    });
+
+    const result = await response.json().catch(() => null);
+
+    if (!response.ok || !result || !result.success) {
+      throw new Error(result?.message || "Impossible de préparer le paiement.");
+    }
+
+    if (!result.payment_url) {
+      throw new Error("Le serveur n'a pas fourni de lien de paiement.");
+    }
+
+    /*
+     * Le serveur a déjà vérifié la session, le pays, le statut du compte
+     * et le montant minimum, créé le dépôt « pending » et généré le checkout.
+     * La page ne connaît aucune clé.
+     */
+
+    // Sécurité : on ne redirige que vers une adresse https.
+    let target;
+    try {
+      target = new URL(result.payment_url);
+    } catch (_) {
+      target = null;
+    }
+
+    if (!target || target.protocol !== "https:") {
+      throw new Error("Le lien de paiement fourni est invalide.");
+    }
+
+    window.location.href = target.href;
+
+  } catch (error) {
+    console.error(error);
+    showMessage(error.message || "Une erreur est survenue.", "error");
+    continueBtn.textContent = "Continuer vers le paiement";
+    updateSummary();
+  }
+});
+
+updateSummary();
+</script>
+</body>
+  </html>
+      
